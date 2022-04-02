@@ -149,7 +149,7 @@ export default Home;
 
 // http://localhost:3000/api/teams/join?teamId=cl1ht5d2p032338e0n82jxrm1
 
-export function TransactionsDisplay({ isLoadingSpending, spendingData }) {
+export function TransactionsDisplay({ isLoadingSpending, spendingData }: { isLoadingSpending: any, spendingData: any }) {
   return (
     <Stack spacing="5" mt="5" paddingX={2}>
       {isLoadingSpending &&
