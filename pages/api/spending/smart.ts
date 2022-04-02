@@ -9,7 +9,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		switch (req.method) {
 			case "GET":
 				const url = req.query.url as string;
+
 				if (url) {
+					const site = await fetch(url, { method: "GET" });
+
 					res.json({ succes: true });
 				}
 

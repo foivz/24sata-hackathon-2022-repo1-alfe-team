@@ -24,13 +24,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 					};
 
 					// for each t11 reduce to total
-					const final = Object.keys(t11).map((k) => {
+					let final = Object.keys(t11).map((k) => {
 						return {
-							[k]: t11[k].reduce((a, b) => a + b.amount * b.price, 0),
+							id: k,
+							sum: t11[k].reduce((a, b) => a + b.amount * b.price, 0),
 						};
 					});
 
-					res.json(final);
+					// convert array of objects to one object where id is key and sum is value
+					const erer = final.reduce((a: any, b: any) => {
+						a[b.id] = b.sum;
+						return a;
+					}, {});
+
+					res.json(erer);
 				}
 
 				break;
