@@ -14,23 +14,27 @@ export function Transaction({
   userId,
   amount,
   totalPrice,
+  userImage,
 }: {
   itemName: string;
   username: string;
   amount: number;
   totalPrice: number;
   userId: string;
+  userImage: string;
 }) {
   return (
     <HStack justifyContent="space-between" paddingX={2}>
       <HStack alignItems={"center"} height={"min-content"}>
         <Avatar
-          src={`https://avatars.dicebear.com/api/micah/${userId}.svg`}
+          src={
+            userImage || `https://avatars.dicebear.com/api/micah/${userId}.svg`
+          }
           backgroundColor={"white"}
           style={{ border: "1px solid #CCC" }}
           size="md"
           marginRight={2}
-        ></Avatar>
+        />
         <Stack spacing={0}>
           <Heading size="sm" fontWeight={"medium"}>
             {itemName} {amount == 1 ? "" : `x${amount}`}

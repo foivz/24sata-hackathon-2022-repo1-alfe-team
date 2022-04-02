@@ -13,15 +13,17 @@ import {
   Link,
   chakra,
   Container,
+  Skeleton,
+  SkeletonCircle,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Teams, TeamsAndUser, User } from "@prisma/client";
 import { ApiReturn } from "./api/teams";
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import 'swiper/css';
-import 'swiper/css/pagination';
+import "swiper/css";
+import "swiper/css/pagination";
 
 import { useState } from "react";
 import Nav from "../components/Nav";
@@ -63,6 +65,7 @@ const Home: NextPage = () => {
   // }
   // if (isLoading) return <p>Loading...</p>;
   // console.log("🌙🌙🌙", spendingData, isLoadingSpending);
+  // isLoadingSpending = true;
   return (
     <>
       <Swiper
@@ -74,16 +77,31 @@ const Home: NextPage = () => {
         pagination={{ clickable: true }}
         style={{ padding: "24px 0px" }}
       >
-        {data?.map((el: ApiReturn) => {
-          console.log(el);
-          return (
-            <SwiperSlide style={{ padding: "0px 10px" }} key={el.id}>
-              <Container maxW={"container.sm"}>
-                <TeamsSelect el={el} key={el.id} />
-              </Container>
-            </SwiperSlide>
-          );
-        })}
+        {isLoading ? (
+          <SwiperSlide>
+            <Container maxW={"container.sm"}>
+              <Skeleton
+                minH={{
+                  base: "52",
+                  md: "64",
+                }}
+                w="full"
+                rounded="lg"
+              />
+            </Container>
+          </SwiperSlide>
+        ) : (
+          data?.map((el: ApiReturn) => {
+            console.log(el);
+            return (
+              <SwiperSlide style={{ padding: "0px 10px" }} key={el.id}>
+                <Container maxW={"container.sm"}>
+                  <TeamsSelect el={el} key={el.id} />
+                </Container>
+              </SwiperSlide>
+            );
+          })
+        )}
         <SwiperSlide style={{ padding: "0px 10px" }}>
           <Container maxW={"container.sm"}>
             <AddTeamCard />
@@ -91,34 +109,58 @@ const Home: NextPage = () => {
         </SwiperSlide>
       </Swiper>
       {/* </Container> */}
+      <Container maxW="container.xl">
+        <HStack justifyContent="space-between" alignItems="center" paddingX={4}>
+          <Heading size="md" my="auto">
+            Transactions
+          </Heading>
+          <Link>
+            <Text size="sm" color="gray.400">
+              see more
+            </Text>
+          </Link>
+        </HStack>
+        <Stack spacing="5" mt="5" paddingX={2}>
+          {isLoadingSpending &&
+            [1, 2, 3, 4].map((el) => {
+              return (
+                <>
+                  <HStack justifyContent="space-between" paddingX={2}>
+                    <HStack alignItems={"center"} height={"min-content"}>
+                      <SkeletonCircle size="12" />
+                      <Stack spacing={2}>
+                        <Skeleton w="32" h="5" />
+                        <Skeleton w="32" h="3" />
+                      </Stack>
+                    </HStack>
+                    <Stack textAlign="right" spacing={1}>
+                      <Skeleton w="24" h="4" />
+                      <Text fontWeight="normal" fontSize="sm" color="gray.400">
+                        <Skeleton w="24" h="4" />
+                      </Text>
+                    </Stack>
+                  </HStack>
+                </>
+              );
+            })}
+          {spendingData?.map((el: any, i: number) => {
+            console.log("spendingData", el);
+            return (
+              <Transaction
+                key={i}
+                amount={el.amount}
+                itemName={el.item.name}
+                userId={el.userId}
+                username={el.user.name}
+                totalPrice={el.amount * el.item.price}
+                userImage={el.user.image}
+              />
+            );
+          })}
+        </Stack>
+      </Container>
 
-      <HStack justifyContent="space-between" alignItems="center" paddingX={4}>
-        <Heading size="md" my="auto">
-          Transactions
-        </Heading>
-        <Link>
-          <Text size="sm" color="gray.400">
-            see more
-          </Text>
-        </Link>
-      </HStack>
-      <Stack spacing="5" mt="5" paddingX={2}>
-        {spendingData?.map((el: any, i: number) => {
-          console.log("spendingData", el);
-          return (
-            <Transaction
-              key={i}
-              amount={el.amount}
-              itemName={el.item.name}
-              userId={el.userId}
-              username={el.user.name}
-              totalPrice={el.amount * el.item.price}
-            />
-          );
-        })}
-      </Stack>
-
-      <Nav />
+      {/* <Nav /> */}
     </>
   );
 };
