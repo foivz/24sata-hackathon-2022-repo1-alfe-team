@@ -15,15 +15,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				break;
 			case "POST":
 				const { price, name } = req.body;
+				console.log(session.user_id);
 
 				const team1 = await prisma.items.create({
 					data: {
-						userId: session.user_id,
 						price: parseInt(price) ?? 0,
 						name: name,
-						source: {
+						User: {
 							connect: {
-								id: "cl1hsw3qr0132qse0ndfa8bzv",
+								id: session.user_id,
 							},
 						},
 					},
