@@ -123,14 +123,17 @@ model Items {
 }
 
 model Spending {
-  id        String   @id @default(cuid())
-  item      Items    @relation(fields: [itemsId], references: [id])
-  itemsId   String
-  amount    Int
-  team      Teams    @relation(fields: [teamsId], references: [id])
-  teamsId   String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  id      String @id @default(cuid())
+  item    Items  @relation(fields: [itemsId], references: [id])
+  itemsId String
+  amount  Int
+  team    Teams  @relation(fields: [teamsId], references: [id])
+  teamsId String
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+
+  price Float @default(0)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
