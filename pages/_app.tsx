@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 		<SessionProvider session={session}>
 			<QueryClientProvider client={queryClient}>
 				<ChakraProvider>
-					<Container maxW="container.xl" minH="90vh">
+					<Container maxW="container.xl" minH="90vh" paddingX={0}>
 						<Component {...pageProps} />
 						<ToastContainer />
 					</Container>

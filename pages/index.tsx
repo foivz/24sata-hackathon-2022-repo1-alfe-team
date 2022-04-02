@@ -23,6 +23,10 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { useState } from "react";
+import { PlusSquareIcon } from "@chakra-ui/icons";
+import { BiPlus } from "react-icons/bi";
+import { motion } from "framer-motion";
+import AddTeamCard from "../components/AddTeamCard";
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
     fetch("/api/teams").then((res) => res.json())
@@ -30,6 +34,9 @@ const Home: NextPage = () => {
   const [teamSelect, setTeamsSelect] = useState(0);
   console.log("🔥", data);
   // if (isLoading) return <p>Loading...</p>;
+  const MotionBox = motion(Box)
+  const MotionStack = motion(Stack)
+
 
   return (
     <>
@@ -37,7 +44,7 @@ const Home: NextPage = () => {
       <Swiper
         spaceBetween={50}
         slidesPerView={1}
-        onSlideChange={() => console.log('slide change')}
+        onSlideChange={(el) => console.log('slide change', el)}
         onSwiper={(swiper: any) => console.log(swiper)}
         pagination={{ clickable: true }}
         style={{ padding: '24px 0px'}}
@@ -51,26 +58,7 @@ const Home: NextPage = () => {
         );
       })}
         <SwiperSlide style={{padding: '0px 10px'}}>
-          <Stack
-            w={"full"} //
-            bgColor={useColorModeValue("gray.50", "gray.700")}
-            rounded="lg" //
-            border={'1px'}
-            borderColor={useColorModeValue("gray.200", "gray.700")}
-            borderStyle={'dashed'}
-            _hover={{
-              opacity: 0.95,
-              shadow: "md",
-            }}
-            padding="7"
-            minH={{
-              base: "52",
-              md: "64",
-            }}
-            justifyContent="space-between"
-          >
-            
-          </Stack>
+          <AddTeamCard />
         </SwiperSlide>
       </Swiper>
 

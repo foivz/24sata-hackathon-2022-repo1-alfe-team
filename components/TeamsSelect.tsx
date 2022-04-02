@@ -12,12 +12,17 @@ import { chakra, useColorModeValue } from "@chakra-ui/system";
 import { ApiReturn } from "../pages/api/teams/index";
 import React from "react";
 import { elementDragControls } from "framer-motion/types/gestures/drag/VisualElementDragControls";
+import { motion } from "framer-motion";
 export function TeamsSelect({ el }: { el: ApiReturn }) {
   const allTeamMembers = [el.owner, ...el.TeamsAndUser];
   console.log(allTeamMembers);
+  const MotionStack = motion(Stack);
   return (
     <Center>
-      <Stack
+      <MotionStack
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.9 }}
+
         maxW="container.sm"
         key={el.id}
         w={"full"} //
@@ -57,7 +62,7 @@ export function TeamsSelect({ el }: { el: ApiReturn }) {
             </Heading>
           </Box>
         </HStack>
-      </Stack>
+      </MotionStack>
     </Center>
   );
 }
