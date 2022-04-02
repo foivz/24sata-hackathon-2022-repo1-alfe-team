@@ -1,4 +1,5 @@
 import {
+	Center,
 	Container,
 	Heading,
 	HStack,
@@ -10,21 +11,19 @@ import {
 	useMediaQuery,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { useContext, useState } from "react";
+import { default as NextLink } from "next/link";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { createContext } from "vm";
 import AddTeamCard from "../components/AddTeamCard";
 import MobileNav from "../components/MobileNav";
 import NavBar from "../components/Navbar";
 import { TeamsSelect } from "../components/TeamsSelect";
 import { Transaction } from "../components/Transaction";
 import { ApiReturn } from "./api/teams";
-
-
 
 const Home: NextPage = () => {
 	const { isLoading, error, data } = useQuery("teams", () =>
@@ -71,7 +70,7 @@ const Home: NextPage = () => {
 				onSwiper={(swiper: any) => console.log(swiper)}
 				modules={[Pagination]}
 				pagination={{ clickable: true }}
-				style={{ padding: "24px 0px" }}
+				style={{ padding: "24px 0px", paddingBottom: "52px" }}
 			>
 				{isLoading ? (
 					<SwiperSlide>
@@ -116,10 +115,9 @@ const Home: NextPage = () => {
 						</Text>
 					</Link>
 				</HStack>
-        {isLoading === false &&
-        teamSelect !== data?.length && 
+				{isLoading === false && teamSelect !== data?.length && (
 					<TransactionsDisplay id={data[teamSelect || 0]?.id || ""} />
-				}
+				)}
 			</Container>
 			{isLargerThan800 ? null : <MobileNav location="home" />}
 		</>
@@ -131,7 +129,6 @@ export default Home;
 // http://localhost:3000/api/teams/join?teamId=cl1ht5d2p032338e0n82jxrm1
 
 export function TransactionsDisplay({ id }: { id: any }) {
-
 	const {
 		isLoading: isLoadingSpending,
 		error: spendingError,
@@ -169,13 +166,27 @@ export function TransactionsDisplay({ id }: { id: any }) {
 						</>
 					);
 				})}
-      
+
+			{spendingData?.length === 0 && (
+				<Center my={"44"}>
+					<Text fontSize="sm" color="gray.400">
+						No transactions yet,{" "}
+						<Link
+							href={`/transaction/add?teamId=${spendingData.te}`}
+							as={NextLink}
+						>
+							Add one
+						</Link>
+					</Text>
+				</Center>
+			)}
+
 			{spendingData &&
 				spendingData.map((el: any, i: number) => {
 					return (
 						<Transaction
 							key={i}
-              index={i}
+							index={i}
 							amount={el.amount}
 							itemName={el.item.name}
 							userId={el.userId}
