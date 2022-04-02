@@ -22,7 +22,7 @@ export function TeamsSelect({ el }: { el: ApiReturn }) {
     <Center>
       <MotionStack
         whileHover = {{scale: 1.05}}
-        whileTap = {{scale: 0.90}}
+        whileTap = {{scale: 0.95}}
 
         maxW="container.sm"
         key={el.id}

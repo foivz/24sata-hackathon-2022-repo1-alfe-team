@@ -12,6 +12,7 @@ import {
   Text,
   Link,
   chakra,
+  Container,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -74,14 +75,19 @@ const Home: NextPage = () => {
           console.log(el);
           return (
             <SwiperSlide style={{ padding: "0px 10px" }} key={el.id}>
-              <TeamsSelect el={el} key={el.id} />
+              <Container maxW={"container.sm"}>
+                <TeamsSelect el={el} key={el.id} />
+              </Container>
             </SwiperSlide>
           );
         })}
         <SwiperSlide style={{ padding: "0px 10px" }}>
-          <AddTeamCard />
+          <Container maxW={"container.sm"}>
+            <AddTeamCard />
+          </Container>
         </SwiperSlide>
       </Swiper>
+      {/* </Container> */}
 
       <HStack justifyContent="space-between" alignItems="center" paddingX={4}>
         <Heading size="md" my="auto">
