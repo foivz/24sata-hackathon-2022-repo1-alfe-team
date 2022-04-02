@@ -3,6 +3,8 @@ import { Switch, useMediaQuery } from "@chakra-ui/react";
 import MobileNav from "../components/MobileNav";
 import NavBar from "../components/Navbar";
 import { useColorMode } from "@chakra-ui/react";
+
+
 const Settings = () => {
     const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
     const { colorMode, toggleColorMode } = useColorMode();
@@ -20,6 +22,7 @@ const Settings = () => {
                         onChange={toggleColorMode}
                     />
                 </HStack>
+                
             </Box>
             {isLargerThan800 ? null : <MobileNav location="settings" />}
         </>

@@ -17,6 +17,7 @@ export function Transaction({
   totalPrice,
   userImage,
   index,
+  nodate,
 }: {
   itemName: string;
   username: string;
@@ -25,6 +26,7 @@ export function Transaction({
   userId: string;
   userImage: string;
   index?: number;
+  nodate?: boolean;
 }) {
   const MHStack = motion(HStack);
   console.log("🌙🌙🌙", index);
@@ -58,7 +60,7 @@ export function Transaction({
           </chakra.span>
         </Text>
         <Text fontWeight="normal" fontSize="sm" color="gray.400">
-          May 26, 2022
+          {nodate?'spent':'May 26, 2022'}
         </Text>
       </Stack>
     </MHStack>
