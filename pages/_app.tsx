@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ChakraProvider>
           <NavBar />
-          <Container maxW="container.xl" minH="90vh">
+          <Container maxW="container.xl" minH="90vh" padding={0}>
             <Component {...pageProps} />
           </Container>
         </ChakraProvider>
