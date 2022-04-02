@@ -132,54 +132,15 @@ const Home: NextPage = () => {
           </Link>
         </HStack>
         {teamSelect !== data?.length ? (
-          <Stack spacing="5" mt="5" paddingX={2}>
-            {isLoadingSpending &&
-              [1, 2, 3, 4].map((el) => {
-                return (
-                  <>
-                    <HStack justifyContent="space-between" paddingX={2}>
-                      <HStack alignItems={"center"} height={"min-content"}>
-                        <SkeletonCircle size="12" />
-                        <Stack spacing={2}>
-                          <Skeleton w="32" h="5" />
-                          <Skeleton w="32" h="3" />
-                        </Stack>
-                      </HStack>
-                      <Stack textAlign="right" spacing={1}>
-                        <Skeleton w="24" h="4" />
-                        <Text
-                          fontWeight="normal"
-                          fontSize="sm"
-                          color="gray.400"
-                        >
-                          <Skeleton w="24" h="4" />
-                        </Text>
-                      </Stack>
-                    </HStack>
-                  </>
-                );
-              })}
-
-            {spendingData &&
-              spendingData.map((el: any, i: number) => {
-                console.log("spendingData", el);
-
-                return (
-                  <Transaction
-                    key={i}
-                    amount={el.amount}
-                    itemName={el.item.name}
-                    userId={el.userId}
-                    username={el.user.name}
-                    totalPrice={el.amount * el.item.price}
-                    userImage= '/' // {el.user.image}
-                  />
-                );
-              })}
-          </Stack>
+          <TransactionsDisplay
+            isLoadingSpending={isLoadingSpending}
+            // el={el}
+            spendingData={spendingData}
+            // i={i}
+          />
         ) : null}
       </Container>
-      {isLargerThan800 ? null:<MobileNav />}
+      {isLargerThan800 ? null : <MobileNav />}
     </>
   );
 };
@@ -187,3 +148,48 @@ const Home: NextPage = () => {
 export default Home;
 
 // http://localhost:3000/api/teams/join?teamId=cl1ht5d2p032338e0n82jxrm1
+
+export function TransactionsDisplay({ isLoadingSpending, spendingData }) {
+  return (
+    <Stack spacing="5" mt="5" paddingX={2}>
+      {isLoadingSpending &&
+        [1, 2, 3, 4].map((el) => {
+          return (
+            <>
+              <HStack justifyContent="space-between" paddingX={2}>
+                <HStack alignItems={"center"} height={"min-content"}>
+                  <SkeletonCircle size="12" />
+                  <Stack spacing={2}>
+                    <Skeleton w="32" h="5" />
+                    <Skeleton w="32" h="3" />
+                  </Stack>
+                </HStack>
+                <Stack textAlign="right" spacing={1}>
+                  <Skeleton w="24" h="4" />
+                  <Text fontWeight="normal" fontSize="sm" color="gray.400">
+                    <Skeleton w="24" h="4" />
+                  </Text>
+                </Stack>
+              </HStack>
+            </>
+          );
+        })}
+
+      {spendingData &&
+        spendingData.map((el: any, i: number) => {
+          console.log("spendingData", el);
+          return (
+            <Transaction
+              key={i}
+              amount={el.amount}
+              itemName={el.item.name}
+              userId={el.userId}
+              username={el.user.name}
+              totalPrice={el.amount * el.price}
+              userImage="/" // {el.user.image}
+            />
+          );
+        })}
+    </Stack>
+  );
+}
