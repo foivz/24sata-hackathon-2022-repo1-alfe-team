@@ -7,14 +7,17 @@ import {
   Box,
   Text,
 } from "@chakra-ui/react";
-import { chakra } from "@chakra-ui/system";
+import { chakra, useColorModeValue } from "@chakra-ui/system";
+import { ApiReturn } from "../pages/api/teams/index";
 import React from "react";
-export function TeamsSelect({ el, i }) {
+export function TeamsSelect({ el }: { el: ApiReturn }) {
   return (
     <Stack
       key={el.id}
-      w={"full"} // bgColor={useColorModeValue("gray.50", "gray.700")}
-      rounded="lg" // shadow={useColorModeValue("lg", "sm")}
+      w={"full"} //
+      bgColor={useColorModeValue("gray.50", "gray.700")}
+      rounded="lg" //
+      shadow={useColorModeValue("lg", "sm")}
       _hover={{
         opacity: 0.95,
         shadow: "md",

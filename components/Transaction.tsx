@@ -1,8 +1,8 @@
 import { HStack, Avatar, Stack, Heading, chakra, Text } from "@chakra-ui/react";
 import React from "react";
-export function Transaction({ i }) {
+export function Transaction() {
   return (
-    <HStack key={i} justifyContent="space-between">
+    <HStack justifyContent="space-between">
       <HStack>
         <Avatar size="md"></Avatar>
         <Stack>

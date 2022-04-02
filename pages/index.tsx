@@ -1,4 +1,4 @@
-import { TeamsSelect } from "./TeamsSelect";
+import { TeamsSelect } from "../components/TeamsSelect";
 import { Transaction } from "../components/Transaction";
 import {
   Avatar,
@@ -17,6 +17,7 @@ import type { NextPage } from "next";
 import Navbar from "../components/Navbar";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Teams, TeamsAndUser, User } from "@prisma/client";
+import { ApiReturn } from "./api/teams";
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("repoData", () =>
     fetch("/api/teams").then((res) => res.json())
@@ -26,19 +27,10 @@ const Home: NextPage = () => {
 
   return (
     <>
-      {data?.map(
-        (
-          el: Teams & {
-            TeamsAndUser: (TeamsAndUser & {
-              user: User;
-            })[];
-            owner: User;
-          }
-        ) => {
-          console.log(el);
-          return <TeamsSelect el={el} key={el.id} />;
-        }
-      )}
+      {data?.map((el: ApiReturn) => {
+        console.log(el);
+        return <TeamsSelect el={el} key={el.id} />;
+      })}
       <HStack justifyContent="space-between" alignItems="center" mt="10">
         <Heading size="lg" my="auto">
           Transactions
@@ -49,7 +41,7 @@ const Home: NextPage = () => {
       </HStack>
       <Stack spacing="5" mt="5">
         {[1, 2, 3, 4, 5].map((i) => {
-          return <Transaction i={i} />;
+          return <Transaction key={i} />;
         })}
       </Stack>
     </>
