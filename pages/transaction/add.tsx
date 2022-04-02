@@ -7,6 +7,12 @@ import {
 	HStack,
 	IconButton,
 	Input,
+	Modal,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalHeader,
+	ModalOverlay,
 	Text,
 	VStack,
 } from "@chakra-ui/react";
@@ -21,12 +27,19 @@ import {
 	SingleValueProps,
 } from "chakra-react-select";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { FiX } from "react-icons/fi";
+import { FiTrash } from "react-icons/fi";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
+import create from "zustand";
+import AddItem from "../item/add";
 import { AddNavbar } from "../teams/add";
+
+export const useAddItemStore = create<any>((set) => ({
+	isOpen: false,
+	setIsOpen: (open: any) => set((state: any) => ({ ...state, isOpen: open })),
+}));
 
 interface AddSpendingProps {}
 
@@ -39,6 +52,26 @@ interface Opp extends OptionBase {
 interface TransFrom {
 	items: ItemForm[];
 }
+
+const SelectMenuButton = (props: any) => {
+	const { setIsOpen, isOpen } = useAddItemStore();
+
+	return (
+		<chakraComponents.MenuList {...props}>
+			{props.children}
+
+			<Button
+				w={"full"}
+				onClick={() => {
+					setIsOpen(true);
+				}}
+				variant={"ghost"}
+			>
+				Add Your Item
+			</Button>
+		</chakraComponents.MenuList>
+	);
+};
 
 const Option = (props: OptionProps<Opp, false, GroupBase<Opp>>) => {
 	return (
@@ -91,7 +124,9 @@ const AddSpending = ({}: AddSpendingProps) => {
 		setError,
 		setValue,
 		formState: { errors },
-	} = useForm<TransFrom>();
+	} = useForm<TransFrom>({});
+
+	const { setIsOpen, isOpen } = useAddItemStore();
 
 	const addSpending = useMutation<
 		{
@@ -117,13 +152,34 @@ const AddSpending = ({}: AddSpendingProps) => {
 		}
 	);
 
+	useEffect(() => {
+		append({
+			amount: 1,
+			price: 0,
+			itemId: undefined,
+		});
+	}, []);
+
 	const router = useRouter();
 
 	return (
 		<Container maxW="container.sm" minH="90vh">
 			<Box>
+				<Modal isOpen={isOpen} onClose={setIsOpen}>
+					<ModalOverlay />
+					<ModalContent>
+						<ModalHeader>Modal Title</ModalHeader>
+						<ModalCloseButton />
+						<ModalBody>
+							<Box h="2" w="full"></Box>
+
+							<AddItem embeded={true} />
+							<Box h="6" w="full"></Box>
+						</ModalBody>
+					</ModalContent>
+				</Modal>
 				<AddNavbar title="Dodaj transakciju" />
-				<VStack w="full">
+				<VStack spacing={4} w="full">
 					{fields.map((field, index) => (
 						<VStack alignItems={"start"} w="full" key={index}>
 							<HStack w="full" justify={"space-between"}>
@@ -135,7 +191,7 @@ const AddSpending = ({}: AddSpendingProps) => {
 									onClick={() => {
 										remove(index);
 									}}
-									icon={<FiX />}
+									icon={<FiTrash />}
 								/>
 							</HStack>
 							<VStack w="full">
@@ -159,10 +215,15 @@ const AddSpending = ({}: AddSpendingProps) => {
 													components={{
 														Option: Option,
 														SingleValue: Value,
+														MenuList: SelectMenuButton,
 													}}
 													ref={ref}
 													chakraStyles={{
 														container: (props) => ({
+															w: "full",
+															...props,
+														}),
+														menuList: (props) => ({
 															w: "full",
 															...props,
 														}),
@@ -221,41 +282,46 @@ const AddSpending = ({}: AddSpendingProps) => {
 						</VStack>
 					))}
 
-					<Button
-						onClick={() => {
-							console.log();
+					<HStack w={"full"}>
+						<Button
+							w={"52"}
+							onClick={() => {
+								console.log();
 
-							append({
-								amount: 1,
-								price: 0,
-								itemId: undefined,
-							});
-						}}
-					>
-						Dodaj
-					</Button>
-
-					<Button
-						// isLoading={mutation.isLoading}
-						// disabled={mutation.isLoading || !!errors.name}
-						onClick={handleSubmit(async (e) => {
-							console.log(e);
-
-							try {
-								await addSpending.mutateAsync({
-									teamsId: router.query.teamId,
-									items: e,
+								append({
+									amount: 1,
+									price: 0,
+									itemId: undefined,
 								});
+							}}
+						>
+							Dodaj stavku
+						</Button>
 
-								toast("Uspješno dodano");
+						<Button
+							// isLoading={mutation.isLoading}
+							// disabled={mutation.isLoading || !!errors.name}
+							onClick={handleSubmit(async (e) => {
+								console.log(e);
 
-								router.push(`/team/${router.query.teamId}`);
-							} catch (error) {}
-						})}
-						w="full"
-					>
-						Dodaj
-					</Button>
+								try {
+									await addSpending.mutateAsync({
+										teamsId: router.query.teamId,
+										items: e,
+									});
+
+									toast("Uspješno dodano");
+
+									router.push(`/team/${router.query.teamId}`);
+								} catch (error) {}
+							})}
+							w="full"
+							textColor={"black"}
+							colorScheme={"brand"}
+						>
+							Dodaj
+						</Button>
+					</HStack>
 				</VStack>
 			</Box>
 		</Container>
