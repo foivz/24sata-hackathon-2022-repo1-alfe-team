@@ -23,6 +23,12 @@ import MobileNav from "../../components/MobileNav";
 import { GetServerSideProps } from "next";
 import MemberCard from "../../components/MemberCard";
 import { userInfo } from "os";
+import { useColorModeValue } from "@chakra-ui/system";
+import { BarChart } from "../../components/BarChart";
+import { BiBarChart, BiPieChart } from "react-icons/bi";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { PieChart } from "../../components/PieChart";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // const { teamId } = ctx.query;
@@ -40,6 +46,14 @@ const Index = (props: any) => {
   const { teamId } = router.query;
   // const { isLoading, error, data } = useQuery("teams", () =>
   //   fetch("/api/teams").then((res) => res.json())
+  const [chart, setChart] = useState("bar");
+  const MotionStack = motion(Stack);
+
+  // const { isLoading, error, data } = useQuery(`spending-${teamId}`, () =>
+  //   fetch(`/api/spending?teamId=${teamId}`).then((res) => res.json())
+  // );
+  // const { data: teamsData } = useQuery(`teams`, () =>
+  //   fetch(`/api/teams`).then((res) => res.json())
   // );
   // console.log("🔥🔥🔥", data);
   const { isLoading, error, data } = useQuery(`spending-${teamId}`, () =>
@@ -54,8 +68,18 @@ const Index = (props: any) => {
   console.log(thisTeam?.TeamsAndUser);
   console.log("😥😥😥", teamsData);
   return (
-    <Container maxW="container.md">
-      <HStack px="4" py="2" justifyContent="space-between">
+    <Container maxW="container.lg">
+      <HStack
+        zIndex={10}
+        backgroundColor={useColorModeValue("white", "gray.900")}
+        position={"fixed"}
+        w={"full"}
+        top={0}
+        left={0}
+        px="4"
+        py="2"
+        justifyContent="space-between"
+      >
         <IconButton
           aria-label="Search database"
           icon={<FiChevronLeft />}
@@ -69,6 +93,7 @@ const Index = (props: any) => {
           variant="ghost"
         />
       </HStack>
+      <Box p={6}></Box>
       <VStack spacing="-1" color="gray.600">
         <Text>spending</Text>
         <Heading color="black">{thisTeamSpending}</Heading>
@@ -77,7 +102,13 @@ const Index = (props: any) => {
         </chakra.span>
       </VStack>
       <Tabs>
-        <TabList shadow={"md"}>
+        <TabList
+          zIndex={10}
+          backgroundColor={useColorModeValue("white", "gray.900")}
+          position={"sticky"}
+          top={12}
+          shadow={"md"}
+        >
           <Tab>Transactions</Tab>
           <Tab>Members</Tab>
           <Tab>Stats</Tab>
@@ -101,6 +132,59 @@ const Index = (props: any) => {
                 );
               })}
             </Stack>
+          </TabPanel>
+          <TabPanel>
+            <HStack px={4} py={2}>
+              <MotionStack
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setChart("Bar")}
+                w={12}
+                backgroundColor={chart === "Bar" ? "blue.500" : "blue.300"}
+                color={"white"}
+                mr={2}
+                h={12}
+                rounded={"md"}
+                shadow={"base"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <BiBarChart />
+              </MotionStack>
+              <MotionStack
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setChart("Pie")}
+                w={12}
+                backgroundColor={chart === "Pie" ? "blue.500" : "blue.300"}
+                color={"white"}
+                mr={2}
+                h={12}
+                rounded={"md"}
+                shadow={"base"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <BiPieChart />
+              </MotionStack>
+            </HStack>
+            {/* <Text fontWeight='medium' fontSize={'md'}>Predviđena potrošnja za idući mjesec</Text> */}
+
+            {chart === "Bar" ? (
+              <Stack h={"300px"}>
+                <Text fontWeight="medium" fontSize={"md"}>
+                  Predviđena potrošnja za idući mjesec
+                </Text>
+                <BarChart />
+              </Stack>
+            ) : (
+              <>
+                <Text fontWeight="medium" fontSize={"md"}>
+                  Potrošnja po članu
+                </Text>
+                <Stack h={"300px"} px={10}>
+                  <PieChart />
+                </Stack>
+              </>
+            )}
           </TabPanel>
           <TabPanel></TabPanel>
         </TabPanels>
