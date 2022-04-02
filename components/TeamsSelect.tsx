@@ -14,14 +14,16 @@ import { ApiReturn } from "../pages/api/teams/index";
 import React from "react";
 import { elementDragControls } from "framer-motion/types/gestures/drag/VisualElementDragControls";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 export function TeamsSelect({ el }: { el: ApiReturn }) {
   const allTeamMembers = [el.owner, ...el.TeamsAndUser];
   console.log(allTeamMembers);
   const MotionStack = motion(Stack);
+  const router = useRouter();
 
   return (
     <>
-      <Center>
+      <Center onClick={() => router.push(`/team/${el.id}`)}>
         <MotionStack
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
