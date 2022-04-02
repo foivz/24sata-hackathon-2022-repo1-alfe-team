@@ -17,6 +17,8 @@ import {
 import { useRouter } from "next/router";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { FiChevronLeft, FiSettings } from "react-icons/fi";
+import MobileNav from "../../components/MobileNav";
+const Index = () => {
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -42,7 +44,7 @@ const Index = (props: any) => {
   );
   const thisTeamSpending = teamsData.filter((el: any) => el.id == teamId)[0]
     .spending;
-  console.log(thisTeamSpending);
+  console.log(data);
   return (
     <Box>
       <HStack p="5" justifyContent="space-between">
@@ -74,9 +76,7 @@ const Index = (props: any) => {
         </TabList>
 
         <TabPanels>
-          <TabPanel>
-            <p>one!</p>
-          </TabPanel>
+          <TabPanel>{}</TabPanel>
           <TabPanel>
             <p>two!</p>
           </TabPanel>
@@ -85,6 +85,7 @@ const Index = (props: any) => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <MobileNav />
     </Box>
   );
 };
