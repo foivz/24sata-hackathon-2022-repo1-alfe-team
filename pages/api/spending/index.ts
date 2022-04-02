@@ -21,12 +21,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 				break;
 			case "POST":
-				const { amount, team_id, itemId } = req.body;
+				const { amount, teamdId, itemId } = req.body;
 				const team = await prisma.spending.create({
 					data: {
 						amount: amount,
 						userId: session.user_id,
-						teamsId: team_id,
+						teamsId: teamdId,
 						itemsId: itemId,
 					},
 				});
