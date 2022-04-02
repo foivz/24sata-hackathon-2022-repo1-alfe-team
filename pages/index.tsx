@@ -1,3 +1,4 @@
+import { Transaction } from "../components/Transaction";
 import {
   Avatar,
   AvatarGroup,
@@ -8,12 +9,17 @@ import {
   useColorModeValue,
   VStack,
   Text,
+  Link,
   chakra,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Navbar from "../components/Navbar";
-
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 const Home: NextPage = () => {
+  const { isLoading, error, data } = useQuery("repoData", () =>
+    fetch("/api/teams").then((res) => res.json())
+  );
+  console.log("🔥", data);
   return (
     <>
       <Stack
@@ -44,6 +50,19 @@ const Home: NextPage = () => {
             </Heading>
           </Box>
         </HStack>
+      </Stack>
+      <HStack justifyContent="space-between" alignItems="center" mt="10">
+        <Heading size="lg" my="auto">
+          Transactions
+        </Heading>
+        <Link>
+          <Text color="gray.400">see more</Text>
+        </Link>
+      </HStack>
+      <Stack spacing="5" mt="5">
+        {[1, 2, 3, 4, 5].map((i) => {
+          return <Transaction i={i} />;
+        })}
       </Stack>
     </>
   );
