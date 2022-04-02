@@ -23,7 +23,6 @@ import NavBar from "../components/Navbar";
 import { TeamsSelect } from "../components/TeamsSelect";
 import { Transaction } from "../components/Transaction";
 import { ApiReturn } from "./api/teams";
-import { TransactionContext } from "./_app";
 
 
 
@@ -117,27 +116,6 @@ export default Home;
 // http://localhost:3000/api/teams/join?teamId=cl1ht5d2p032338e0n82jxrm1
 
 export function TransactionsDisplay({ id }: { id: any }) {
-  const [transaction, setTransaction] = useContext(TransactionContext);
-  console.log("🌙🌙🌙", transaction?.id, "🤘🤘🤘", id);
-  if(transaction && transaction?.id === id)
-  return (
-		<Stack spacing="5" mt="5" paddingX={2}>
-      {transaction.spendingData.map((el: any, i: number) => {
-        return (
-          <Transaction
-            key={i}
-            index={i}
-            amount={el.amount}
-            itemName={el.item.name}
-            userId={el.userId}
-            username={el.user.name}
-            totalPrice={el.amount * el.price}
-            userImage="/" // {el.user.image}
-          />
-        )
-      })}
-  </Stack>
-  )
 
 	const {
 		isLoading: isLoadingSpending,
@@ -152,7 +130,6 @@ export function TransactionsDisplay({ id }: { id: any }) {
 			enabled: !!id,
 		}
 	);
-  !isLoadingSpending && setTransaction({spendingData, id});
 	return (
 		<Stack spacing="5" mt="5" paddingX={2}>
 			{isLoadingSpending &&
