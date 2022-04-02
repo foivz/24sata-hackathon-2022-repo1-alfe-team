@@ -1,3 +1,4 @@
+import pick from "lodash.pickby";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "../../../lib/middleware/auth";
 import { returnError } from "../../../lib/middleware/error";
@@ -9,28 +10,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 		switch (req.method) {
 			case "GET":
-				const teamIdQ = req.query.teamId as string;
-				if (teamIdQ) {
-					const team = await prisma.spending.findMany({
-						where: {
-							teamsId: teamIdQ,
-						},
-					});
-					res.json(team);
-				}
-
-				break;
-			case "POST":
-				const { amount, teamdId, itemId } = req.body;
-				const team = await prisma.spending.create({
-					data: {
-						amount: amount,
-						userId: session.user_id,
-						teamsId: teamdId,
-						itemsId: itemId,
+				const user = await prisma.user.findFirst({
+					where: {
+						id: session.user_id,
 					},
 				});
-				res.json(team);
+				res.json(user);
+
+				break;
+
+			case "PATCH":
+				const d = pick(req.body, (v) => v !== undefined);
+
+				const useredit = await prisma.user.update({
+					where: {
+						id: session.user_id,
+					},
+					data: d,
+				});
+				res.json(useredit);
 
 				break;
 			default:
