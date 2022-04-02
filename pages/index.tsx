@@ -23,8 +23,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { useState } from "react";
-import MobileNav from "../components/MobileNav";
 
+import MobileNav from "../components/MobileNav";
 
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
@@ -53,6 +53,9 @@ const Home: NextPage = () => {
           </SwiperSlide>
         );
       })}
+        <SwiperSlide style={{padding: '0px 10px'}}>
+          <AddTeamCard />
+        </SwiperSlide>
       </Swiper>
 
       <HStack justifyContent="space-between" alignItems="center" paddingX={4}>
