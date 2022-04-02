@@ -6,6 +6,7 @@ import {
   Heading,
   HStack,
   IconButton,
+  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -21,6 +22,11 @@ import MobileNav from "../../components/MobileNav";
 import { GetServerSideProps } from "next";
 import MemberCard from "../../components/MemberCard";
 import { useColorModeValue } from "@chakra-ui/system";
+import { BarChart } from "../../components/BarChart";
+import { BiBarChart, BiPieChart } from "react-icons/bi";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { PieChart } from "../../components/PieChart";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // const { teamId } = ctx.query;
@@ -36,7 +42,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Index = (props: any) => {
   const router = useRouter();
   const { teamId } = router.query;
-
+  const [chart, setChart] = useState("bar");
+  const MotionStack = motion(Stack);
 
   // const { isLoading, error, data } = useQuery(`spending-${teamId}`, () =>
   //   fetch(`/api/spending?teamId=${teamId}`).then((res) => res.json())
@@ -86,7 +93,29 @@ const Index = (props: any) => {
             ))}
           </TabPanel>
           <TabPanel>
+            <HStack px={4} py={2}>
+              <MotionStack whileTap={{scale: 0.95}} onClick={() => setChart('Bar')} w={12} backgroundColor={chart==='Bar'?'blue.500':'blue.300'} color={'white'} mr={2} h={12} rounded={'md'} shadow={'base'} justifyContent={'center'} alignItems={'center'}>
+                <BiBarChart />
+              </MotionStack>
+              <MotionStack whileTap={{scale: 0.95}} onClick={() => setChart('Pie')} w={12} backgroundColor={chart==='Pie'?'blue.500':'blue.300'} color={'white'} mr={2} h={12} rounded={'md'} shadow={'base'} justifyContent={'center'} alignItems={'center'}>
+                <BiPieChart />
+              </MotionStack>
+            </HStack>
+            {/* <Text fontWeight='medium' fontSize={'md'}>Predviđena potrošnja za idući mjesec</Text> */}
             
+              {chart==='Bar'?
+              <Stack h={'300px'}>
+                <Text fontWeight='medium' fontSize={'md'}>Predviđena potrošnja za idući mjesec</Text>
+                <BarChart />
+              </Stack>  
+              :
+              <>
+                <Text fontWeight='medium' fontSize={'md'}>Potrošnja po članu</Text>
+                <Stack h={'300px'} px={10}>
+                  <PieChart />
+                </Stack>
+              </>
+              }
           </TabPanel>
         </TabPanels>
       </Tabs>
