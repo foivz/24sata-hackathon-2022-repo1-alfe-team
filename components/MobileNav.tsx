@@ -44,8 +44,8 @@ export default function MobileNav() {
       >
         <Flex h={16} alignItems={"center"} justifyContent={"center"}>
           <Stack direction={"row"} justifyContent={"space-around"} width="full">
-            <IconButton backgroundColor={'transparent'} aria-label='Home' icon={<VscHome size="26px" />} size="lg" />
-            <IconButton backgroundColor={'#D1E800'} shadow={"lg"} aria-label='Add new' icon={<BsPlusSquare size="26px" color="white" />} size="lg" />
+            <IconButton backgroundColor={'#D1E800'} shadow={"lg"} color="white" aria-label='Home' icon={<VscHome size="26px" />} size="lg" />
+            <IconButton backgroundColor={'transparent'} aria-label='Add new' icon={<BsPlusSquare size="26px" />} size="lg" />
             <IconButton backgroundColor={'transparent'} aria-label='Setting' icon={<IoSettingsOutline size="26px" />} size="lg" />
           </Stack>
         </Flex>
