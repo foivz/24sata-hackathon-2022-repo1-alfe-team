@@ -151,7 +151,9 @@ const Index = (props: any) => {
                     userId={el.userId}
                     userImage={el.user.images}
                     username={el.user.name}
-                    userMonthlySpending={spendingPerUser[el.userId] || 0}
+                    userMonthlySpending={
+                      (spendingPerUser && spendingPerUser[el.userId]) || 0
+                    }
                     userType={el.user.role}
                   />
                 );
