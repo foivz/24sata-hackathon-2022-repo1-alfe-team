@@ -1,9 +1,11 @@
 import { ChakraProvider, Container, extendTheme } from "@chakra-ui/react";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
+import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { createContext } from "react";
 import "../styles/globals.css";
 
 const queryClient = new QueryClient();

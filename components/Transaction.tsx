@@ -27,6 +27,7 @@ export function Transaction({
   index?: number;
 }) {
   const MHStack = motion(HStack);
+  console.log("🌙🌙🌙", index);
   return (
     <MHStack
     initial={{ opacity: 0, y: 20 }}
