@@ -3,9 +3,11 @@ import {
   Center,
   chakra,
   ChakraProvider,
+  Container,
   Heading,
   HStack,
   IconButton,
+  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -20,6 +22,7 @@ import { FiChevronLeft, FiSettings } from "react-icons/fi";
 import MobileNav from "../../components/MobileNav";
 import { GetServerSideProps } from "next";
 import MemberCard from "../../components/MemberCard";
+import { userInfo } from "os";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // const { teamId } = ctx.query;
@@ -35,18 +38,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Index = (props: any) => {
   const router = useRouter();
   const { teamId } = router.query;
+  // const { isLoading, error, data } = useQuery("teams", () =>
+  //   fetch("/api/teams").then((res) => res.json())
+  // );
+  // console.log("🔥🔥🔥", data);
+  const { isLoading, error, data } = useQuery(`spending-${teamId}`, () =>
+    fetch(`/api/spending?teamId=${teamId}`).then((res) => res.json())
+  );
+  const { data: teamsData } = useQuery(`teams`, () =>
+    fetch(`/api/teams`).then((res) => res.json())
+  );
+  const thisTeam = teamsData?.filter((el: any) => el.id == teamId)[0];
 
-  // const { isLoading, error, data } = useQuery(`spending-${teamId}`, () =>
-  //   fetch(`/api/spending?teamId=${teamId}`).then((res) => res.json())
-  // );
-  // const { data: teamsData } = useQuery(`teams`, () =>
-  //   fetch(`/api/teams`).then((res) => res.json())
-  // );
-  // const thisTeamSpending = teamsData?.filter((el: any) => el.id == teamId)[0]
-  //   .spending;
-  // console.log(data);
+  const thisTeamSpending = thisTeam?.spending;
+  console.log(thisTeam?.TeamsAndUser);
+  console.log("😥😥😥", teamsData);
   return (
-    <Box>
+    <Container maxW="container.md">
       <HStack px="4" py="2" justifyContent="space-between">
         <IconButton
           aria-label="Search database"
@@ -63,7 +71,7 @@ const Index = (props: any) => {
       </HStack>
       <VStack spacing="-1" color="gray.600">
         <Text>spending</Text>
-        <Heading color="black">{"1 543,34"}</Heading>
+        <Heading color="black">{thisTeamSpending}</Heading>
         <chakra.span fontSize="sm" fontWeight="normal">
           HRK
         </chakra.span>
@@ -78,16 +86,26 @@ const Index = (props: any) => {
         <TabPanels>
           <TabPanel>{}</TabPanel>
           <TabPanel p={0}>
-            {[0,1,2,3,4,5].map((el: any) => (
-              <MemberCard key={el} />
-            ))}
+            <Stack>
+              {thisTeam?.TeamsAndUser?.map((el: any) => {
+                console.log("🔥🔥🔥🔥🔥🔥🔥", el);
+                return (
+                  <MemberCard
+                    key={el.id}
+                    userId={el.userId}
+                    userImage={el.user.images}
+                    username={el.user.name}
+                    userMonthlySpending={el.user.monthlySpending}
+                    userType={el.user.role}
+                  />
+                );
+              })}
+            </Stack>
           </TabPanel>
-          <TabPanel>
-            
-          </TabPanel>
+          <TabPanel></TabPanel>
         </TabPanels>
       </Tabs>
-    </Box>
+    </Container>
   );
 };
 
