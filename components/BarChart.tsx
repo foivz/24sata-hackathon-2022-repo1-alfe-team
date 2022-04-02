@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import faker from '@faker-js/faker';
+import { Box, HStack, Stack, Text } from '@chakra-ui/layout';
 
 ChartJS.register(
   CategoryScale,
@@ -61,5 +62,22 @@ export const data = {
 };
 
 export function BarChart() {
-  return <Bar options={options} data={data} />;
+
+  const [selected, setSelected] = useState(0);
+  // return <Bar options={options} data={data} />;
+  
+  return (
+    <HStack maxW={'md'} justifyContent={'space-around'}>
+      {['Jan', 'Feb', 'Mar', 'Apr', 'May'].map((mth, i) => {
+        console.log(Math.sin((i+0.52)*2.525)*100);
+        return (
+        <Stack onClick={() => setSelected(i)} rounded="md" backgroundColor={selected===i?'gray.100':''} w={12} height={'full'} justifyContent={'end'} p={2} alignItems={'center'} key={i}>
+          <Box w={'full'} h={`${Math.abs(Math.sin((i+0.542)*2.525))*100}px`} rounded="md" bg={'brand.500'}></Box>
+          <Text fontWeight={'medium'}>{mth}</Text>
+        </Stack>
+        )
+      } 
+      )}
+    </HStack>
+  )
 }
