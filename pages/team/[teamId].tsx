@@ -123,8 +123,7 @@ const Index = (props: any) => {
         <TabPanels>
           <TabPanel>
             <TransactionsDisplay
-              isLoadingSpending={isLoading}
-              spendingData={data}
+              id={'123'}
             />
           </TabPanel>
           <TabPanel p={0}>
