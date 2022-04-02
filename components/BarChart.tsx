@@ -67,12 +67,12 @@ export function BarChart() {
   // return <Bar options={options} data={data} />;
   
   return (
-    <HStack maxW={'md'} justifyContent={'space-around'}>
+    <HStack maxW={'md'} justifyContent={'space-around'} alignItems={'end'}>
       {['Jan', 'Feb', 'Mar', 'Apr', 'May'].map((mth, i) => {
         console.log(Math.sin((i+0.52)*2.525)*100);
         return (
-        <Stack onClick={() => setSelected(i)} rounded="md" backgroundColor={selected===i?'gray.100':''} w={12} height={'full'} justifyContent={'end'} p={2} alignItems={'center'} key={i}>
-          <Box w={'full'} h={`${Math.abs(Math.sin((i+0.542)*2.525))*100}px`} rounded="md" bg={'brand.500'}></Box>
+        <Stack h={'150px'} onClick={() => setSelected(i)} rounded="md" backgroundColor={selected===i?'gray.100':''} w={12} justifyContent={'end'} p={2} alignItems={'center'} key={i}>
+          <Box w={'full'} h={`${Math.abs(Math.sin((i+0.542)*2.525))*100}px`} rounded="md" bg={i===4?'green.600':'brand.500'}></Box>
           <Text fontWeight={'medium'}>{mth}</Text>
         </Stack>
         )

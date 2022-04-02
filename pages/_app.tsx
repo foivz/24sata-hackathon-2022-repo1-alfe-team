@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 			<QueryClientProvider client={queryClient}>
 				<ChakraProvider theme={theme} >
 					<Container maxW="container.xl" minH="90vh" paddingX={0}>
-						<Component {...pageProps} />
+						<Component {...pageProps}/>
 						<ToastContainer />
 					</Container>
 				</ChakraProvider>
