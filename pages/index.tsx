@@ -48,6 +48,21 @@ const Home: NextPage = () => {
 	return (
 		<>
 			{isLargerThan800 ? <NavBar /> : null}
+      <script dangerouslySetInnerHTML={{
+        __html: `
+        window.watsonAssistantChatOptions = {
+          integrationID: "cd00869d-10c4-42e4-a973-2db0626bf2ce", // The ID of this integration.
+          region: "eu-gb", // The region your integration is hosted in.
+          serviceInstanceID: "063798ba-c462-43d2-befe-f57173ce0b4f", // The ID of your service instance.
+          onLoad: function(instance) { instance.render(); }
+        };
+        setTimeout(function(){
+          const t=document.createElement('script');
+          t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+          document.head.appendChild(t);
+        });
+        `
+      }}></script>
 			<Swiper
 				spaceBetween={50}
 				slidesPerView={1}
