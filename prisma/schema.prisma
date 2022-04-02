@@ -115,7 +115,7 @@ model Items {
   userId    String?
   price     Float
   source    Sources?   @relation(fields: [sourcesId], references: [id])
-  sourcesId String
+  sourcesId String?
   typesId   String?
   Spending  Spending[]
   createdAt DateTime   @default(now())
