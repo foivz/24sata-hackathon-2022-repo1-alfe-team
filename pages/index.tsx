@@ -14,7 +14,6 @@ import {
   chakra,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import Navbar from "../components/Navbar";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Teams, TeamsAndUser, User } from "@prisma/client";
 import { ApiReturn } from "./api/teams";
@@ -24,7 +23,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { useState } from "react";
-import AddTeamCard from "../components/AddTeamCard";
+
+import MobileNav from "../components/MobileNav";
+
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
     fetch("/api/teams").then((res) => res.json())
@@ -70,6 +71,7 @@ const Home: NextPage = () => {
           return <Transaction key={i} id={i} />;
         })}
       </Stack>
+      <MobileNav />
     </>
   );
 };

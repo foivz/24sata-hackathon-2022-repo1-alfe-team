@@ -2,6 +2,7 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import {
 	Box,
 	Button,
+	Container,
 	FormControl,
 	FormErrorMessage,
 	FormLabel,
@@ -12,9 +13,38 @@ import {
 	VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
+
+interface AddNavbarProps {
+	children?: React.ReactNode | React.ReactNode[];
+	title?: string;
+}
+
+export const AddNavbar = ({ children, title }: AddNavbarProps) => {
+	const router = useRouter();
+
+	return (
+		<Box className={`w-full`} h="16">
+			<HStack alignItems={"center"} justify="space-between" h="full">
+				<IconButton
+					onClick={() => {
+						router.back();
+					}}
+					aria-label="back"
+					icon={<ArrowBackIcon />}
+					variant="ghost"
+				></IconButton>
+				<Text fontWeight={"semibold"} fontSize={"lg"}>
+					{title}
+				</Text>
+				<IconButton aria-label="back" variant="ghost"></IconButton>
+			</HStack>
+		</Box>
+	);
+};
 
 interface AddTeamProps {}
 
@@ -30,24 +60,17 @@ const AddTeam = ({}: AddTeamProps) => {
 		return axios.post("/api/teams", newTeam);
 	});
 
+	const router = useRouter();
+
 	return (
-		<Box>
-			<Box className={`w-full`} h="16">
-				<HStack alignItems={"center"} justify="space-between" h="full">
-					<IconButton
-						aria-label="back"
-						icon={<ArrowBackIcon />}
-						variant="ghost"
-					></IconButton>
-					<Text fontWeight={"semibold"} fontSize={"lg"}>
-						Create Team
-					</Text>
-					<IconButton aria-label="back" variant="ghost"></IconButton>
-				</HStack>
+		<Container maxW="container.sm" minH="90vh">
+			<Box>
+				<AddNavbar title="Dodaj tim" />
 				<VStack>
 					<FormControl isInvalid={!!errors.name}>
-						<FormLabel htmlFor="email">Email</FormLabel>
+						<FormLabel htmlFor="email">Ime Tima</FormLabel>
 						<Input
+							placeholder="Super Tim"
 							{...register("name", {
 								required: {
 									value: true,
@@ -61,10 +84,20 @@ const AddTeam = ({}: AddTeamProps) => {
 					</FormControl>
 
 					<Button
+						isLoading={mutation.isLoading}
+						disabled={mutation.isLoading || !!errors.name}
 						onClick={handleSubmit(async (e) => {
-							await mutation.mutateAsync({
-								name: e.name,
-							});
+							try {
+								await mutation.mutateAsync({
+									name: e.name,
+								});
+
+								router.replace("/teams/added", {
+									query: {
+										id: "2323",
+									},
+								});
+							} catch (error) {}
 						})}
 						w="full"
 					>
@@ -72,7 +105,7 @@ const AddTeam = ({}: AddTeamProps) => {
 					</Button>
 				</VStack>
 			</Box>
-		</Box>
+		</Container>
 	);
 };
 export default AddTeam;
