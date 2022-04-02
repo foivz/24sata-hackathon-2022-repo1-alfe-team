@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -62,9 +62,11 @@ export const data = {
   ],
 };
 
-export function BarChart() {
-
+export function BarChart({setMth}: {setMth: (e: number) => void}) {
   const [selected, setSelected] = useState(0);
+  useEffect(() => {
+    setMth(selected);
+  }, [selected]);
   // return <Bar options={options} data={data} />;
   const darkHighlit = useColorModeValue('gray.100', 'gray.900');
   return (
