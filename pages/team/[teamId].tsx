@@ -65,8 +65,11 @@ const Index = (props: any) => {
   const { data: teamsData } = useQuery(`teams`, () =>
     fetch(`/api/teams`).then((res) => res.json())
   );
+  const { data: spendingPerUser } = useQuery(`spendingPerUser`, () =>
+    fetch(`/api/spending/perUser?teamId=${teamId}`).then((res) => res.json())
+  );
   const thisTeam = teamsData?.filter((el: any) => el.id == teamId)[0];
-
+  console.log("spendingPerUser", spendingPerUser);
   const thisTeamSpending = thisTeam?.spending;
   console.log(thisTeam?.TeamsAndUser);
   console.log("😥😥😥", teamsData);
@@ -126,15 +129,27 @@ const Index = (props: any) => {
           </TabPanel>
           <TabPanel p={0}>
             <Stack px={4} py={4}>
+              <MemberCard
+                key={thisTeam.id}
+                userId={thisTeam.ownerId}
+                userImage={thisTeam.owner.images}
+                username={thisTeam.owner.name}
+                userMonthlySpending={spendingPerUser[thisTeam.ownerId] || 0}
+                userType={thisTeam.owner.role}
+              />
               {thisTeam?.TeamsAndUser?.map((el: any) => {
-                console.log("🔥🔥🔥🔥🔥🔥🔥", el);
+                console.log(
+                  "🔥🔥🔥🔥🔥🔥🔥",
+                  el.userId,
+                  spendingPerUser[el.userId]
+                );
                 return (
                   <MemberCard
                     key={el.id}
                     userId={el.userId}
                     userImage={el.user.images}
                     username={el.user.name}
-                    userMonthlySpending={el.user.monthlySpending}
+                    userMonthlySpending={spendingPerUser[el.userId] || 0}
                     userType={el.user.role}
                   />
                 );
@@ -144,7 +159,7 @@ const Index = (props: any) => {
           <TabPanel>
             {/* <Text fontWeight='medium' fontSize={'md'}>Predviđena potrošnja za idući mjesec</Text> */}
 
-            <Stack justifyContent={'end'}>
+            <Stack justifyContent={"end"}>
               <BarChart />
             </Stack>
           </TabPanel>
