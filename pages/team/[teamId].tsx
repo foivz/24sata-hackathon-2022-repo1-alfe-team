@@ -29,6 +29,9 @@ import { BiBarChart, BiPieChart } from "react-icons/bi";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PieChart } from "../../components/PieChart";
+// import { Transaction } from "@faker-js/faker/helpers";
+import { Transaction } from "../../components/Transaction";
+import { TransactionsDisplay } from "..";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // const { teamId } = ctx.query;
@@ -115,7 +118,12 @@ const Index = (props: any) => {
         </TabList>
 
         <TabPanels>
-          <TabPanel>{}</TabPanel>
+          <TabPanel>
+            <TransactionsDisplay
+              isLoadingSpending={isLoading}
+              spendingData={data}
+            />
+          </TabPanel>
           <TabPanel p={0}>
             <Stack>
               {thisTeam?.TeamsAndUser?.map((el: any) => {
