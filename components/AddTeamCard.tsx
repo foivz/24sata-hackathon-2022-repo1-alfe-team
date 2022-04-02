@@ -9,10 +9,12 @@ import { useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { motion } from "framer-motion";
 import { useQuery } from "react-query";
+import { useRouter } from "next/router";
 const AddTeamCard: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
     fetch("/api/teams").then((res) => res.json())
   );
+  const router = useRouter();
   const [teamSelect, setTeamsSelect] = useState(0);
   console.log("🔥", data);
   // if (isLoading) return <p>Loading...</p>;
@@ -37,7 +39,10 @@ const AddTeamCard: NextPage = () => {
       alignItems="center"
       bg={useColorModeValue("gray.50", "gray.700")}
     >
-      <Box color={useColorModeValue("gray.200", "gray.700")}>
+      <Box
+        color={useColorModeValue("gray.200", "gray.700")}
+        onClick={() => router.push(`/teams/add`)}
+      >
         <BiPlus style={{ strokeWidth: 0.1 }} size={64} />
       </Box>
     </MotionStack>

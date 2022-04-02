@@ -6,48 +6,48 @@ import { returnError } from "../../../lib/middleware/error";
 import { prisma } from "../../../lib/prisma";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-	try {
-		const session = (await withAuth(req)) as any;
+  try {
+    const session = (await withAuth(req)) as any;
 
-		switch (req.method) {
-			case "GET":
-				const teamId = req.query.teamId as string;
-				if (teamId) {
-					const te = await prisma.spending.findMany({
-						where: {
-							teamsId: teamId,
-						},
-					});
+    switch (req.method) {
+      case "GET":
+        const teamId = req.query.teamId as string;
+        if (teamId) {
+          const te = await prisma.spending.findMany({
+            where: {
+              teamsId: teamId,
+            },
+          });
 
-					const t11 = groupBy(te, (t) => t.userId) as any as {
-						[key: string]: Spending[];
-					};
+          const t11 = groupBy(te, (t) => t.userId) as any as {
+            [key: string]: Spending[];
+          };
 
-					// for each t11 reduce to total
-					let final = Object.keys(t11).map((k) => {
-						return {
-							id: k,
-							sum: t11[k].reduce((a, b) => a + b.amount * b.price, 0),
-						};
-					});
+          // for each t11 reduce to total
+          let final = Object.keys(t11).map((k) => {
+            return {
+              id: k,
+              sum: t11[k].reduce((a, b) => a + b.amount * b.price, 0),
+            };
+          });
 
-					// convert array of objects to one object where id is key and sum is value
-					const erer = final.reduce((a: any, b: any) => {
-						a[b.id] = b.sum;
-						return a;
-					}, {});
+          // convert array of objects to one object where id is key and sum is value
+          const erer = final.reduce((a: any, b: any) => {
+            a[b.id] = b.sum;
+            return a;
+          }, {});
 
-					res.json(erer);
-				}
+          res.json(erer);
+        }
 
-				break;
+        break;
 
-			default:
-				break;
-		}
-	} catch (error: any) {
-		returnError(error, req, res, null);
-	}
+      default:
+        break;
+    }
+  } catch (error: any) {
+    returnError(error, req, res, null);
+  }
 };
 
 export default handler;
