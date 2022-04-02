@@ -23,6 +23,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { useState } from "react";
+import Nav from "../components/Nav";
+
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { BiPlus } from "react-icons/bi";
 import { motion } from "framer-motion";
@@ -76,7 +78,7 @@ const Home: NextPage = () => {
           return <Transaction key={i} id={i} />;
         })}
       </Stack>
-      <MobileNav />
+      <Nav />
     </>
   );
 };
