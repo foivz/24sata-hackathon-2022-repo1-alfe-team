@@ -146,7 +146,6 @@ const Index = (props: any) => {
 					<TabPanel p={0}>
 						<Stack px={4} py={4}>
 							<MemberCard
-								owner={true}
 								key={thisTeam?.id}
 								userId={thisTeam?.ownerId}
 								userImage={thisTeam?.owner?.image}
@@ -159,7 +158,6 @@ const Index = (props: any) => {
 							{thisTeam?.TeamsAndUser?.map((el: any) => {
 								return (
 									<MemberCard
-										owner={false}
 										key={el.id}
 										userId={el.userId}
 										userImage={el.user.image}
