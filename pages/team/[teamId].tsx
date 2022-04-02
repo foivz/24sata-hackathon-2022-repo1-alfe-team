@@ -46,7 +46,7 @@ const Index = (props: any) => {
   const { teamId } = router.query;
   // const { isLoading, error, data } = useQuery("teams", () =>
   //   fetch("/api/teams").then((res) => res.json())
-  const [chart, setChart] = useState("bar");
+  const [chart, setChart] = useState("Bar");
   const MotionStack = motion(Stack);
 
   // const { isLoading, error, data } = useQuery(`spending-${teamId}`, () =>
@@ -68,7 +68,7 @@ const Index = (props: any) => {
   console.log(thisTeam?.TeamsAndUser);
   console.log("😥😥😥", teamsData);
   return (
-    <Container maxW="container.lg">
+    <Container maxW="container.lg" paddingX={0}>
       <HStack
         zIndex={10}
         backgroundColor={useColorModeValue("white", "gray.900")}
@@ -134,57 +134,11 @@ const Index = (props: any) => {
             </Stack>
           </TabPanel>
           <TabPanel>
-            <HStack px={4} py={2}>
-              <MotionStack
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setChart("Bar")}
-                w={12}
-                backgroundColor={chart === "Bar" ? "blue.500" : "blue.300"}
-                color={"white"}
-                mr={2}
-                h={12}
-                rounded={"md"}
-                shadow={"base"}
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                <BiBarChart />
-              </MotionStack>
-              <MotionStack
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setChart("Pie")}
-                w={12}
-                backgroundColor={chart === "Pie" ? "blue.500" : "blue.300"}
-                color={"white"}
-                mr={2}
-                h={12}
-                rounded={"md"}
-                shadow={"base"}
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                <BiPieChart />
-              </MotionStack>
-            </HStack>
             {/* <Text fontWeight='medium' fontSize={'md'}>Predviđena potrošnja za idući mjesec</Text> */}
 
-            {chart === "Bar" ? (
-              <Stack h={"300px"}>
-                <Text fontWeight="medium" fontSize={"md"}>
-                  Predviđena potrošnja za idući mjesec
-                </Text>
-                <BarChart />
-              </Stack>
-            ) : (
-              <>
-                <Text fontWeight="medium" fontSize={"md"}>
-                  Potrošnja po članu
-                </Text>
-                <Stack h={"300px"} px={10}>
-                  <PieChart />
-                </Stack>
-              </>
-            )}
+            <Stack justifyContent={'end'}>
+              <BarChart />
+            </Stack>
           </TabPanel>
           <TabPanel></TabPanel>
         </TabPanels>
