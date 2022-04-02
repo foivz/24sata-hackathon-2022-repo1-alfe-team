@@ -130,12 +130,14 @@ const Index = (props: any) => {
           <TabPanel p={0}>
             <Stack px={4} py={4}>
               <MemberCard
-                key={thisTeam.id}
-                userId={thisTeam.ownerId}
-                userImage={thisTeam.owner.images}
-                username={thisTeam.owner.name}
-                userMonthlySpending={spendingPerUser[thisTeam.ownerId] || 0}
-                userType={thisTeam.owner.role}
+                key={thisTeam?.id}
+                userId={thisTeam?.ownerId}
+                userImage={thisTeam?.owner?.images}
+                username={thisTeam?.owner?.name}
+                userMonthlySpending={
+                  (spendingPerUser && spendingPerUser[thisTeam?.ownerId]) || 0
+                }
+                userType={thisTeam?.owner?.role}
               />
               {thisTeam?.TeamsAndUser?.map((el: any) => {
                 console.log(
