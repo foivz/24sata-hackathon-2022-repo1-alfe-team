@@ -5,6 +5,7 @@ import {
 	Center,
 	Heading,
 	HStack,
+	IconButton,
 	Stack,
 	Text,
 } from "@chakra-ui/react";
@@ -12,6 +13,7 @@ import { chakra, useColorModeValue } from "@chakra-ui/system";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React from "react";
+import { FiPlus } from "react-icons/fi";
 import { ApiReturn } from "../pages/api/teams/index";
 export function TeamsSelect({ el }: { el: ApiReturn }) {
 	const allTeamMembers = [el.owner, ...el.TeamsAndUser];
@@ -41,7 +43,22 @@ export function TeamsSelect({ el }: { el: ApiReturn }) {
 					}}
 					justifyContent="space-between"
 				>
-					<Heading size="lg">{el.name}</Heading>
+					<HStack justify={"space-between"}>
+						<Heading size="lg">{el.name}</Heading>
+						<IconButton
+							_hover={{
+								background: "brand.400",
+							}}
+							textColor={useColorModeValue("gray.500", "gray.700")}
+							icon={<FiPlus fill="current" />}
+							aria-label="add"
+							rounded={"full"}
+							bg={"brand.500"}
+							onClick={() => {
+								router.push(`/tranastion/add?teamId=${el.id}`);
+							}}
+						/>
+					</HStack>
 					<HStack justifyContent="space-between" alignItems="center">
 						<AvatarGroup>
 							{allTeamMembers?.map((el, i) => (
