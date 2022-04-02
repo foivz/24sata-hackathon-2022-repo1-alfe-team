@@ -16,14 +16,13 @@ import { motion } from "framer-motion";
 export function TeamsSelect({ el }: { el: ApiReturn }) {
   const allTeamMembers = [el.owner, ...el.TeamsAndUser];
   console.log(allTeamMembers);
-  const MotionStack = motion(Stack);  
+  const MotionStack = motion(Stack);
 
   return (
     <Center>
       <MotionStack
-        whileHover = {{scale: 1.05}}
-        whileTap = {{scale: 0.95}}
-
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         maxW="container.sm"
         key={el.id}
         w={"full"} //
