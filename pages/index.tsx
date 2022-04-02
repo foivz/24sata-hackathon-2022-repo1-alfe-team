@@ -168,7 +168,7 @@ const Home: NextPage = () => {
         ) : null}
       </Container>
 
-      {/* <Nav /> */}
+      <Nav />
     </>
   );
 };
