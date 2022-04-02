@@ -41,7 +41,7 @@ export default function NavBar() {
   const { data: session } = useSession();
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} mb="5">
+      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} mb="5" position={"fixed"} top={0} left={0} width={"full"}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Image src={useColorModeValue("logo-light.png","logo-dark.png")} w="24" />
 
@@ -86,6 +86,7 @@ export default function NavBar() {
           </Flex>
         </Flex>
       </Box>
+      <Box p={8}></Box>
     </>
   );
 }

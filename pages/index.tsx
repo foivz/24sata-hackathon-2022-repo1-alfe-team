@@ -54,7 +54,11 @@ const Home: NextPage = () => {
   const MotionBox = motion(Box);
   const MotionStack = motion(Stack);
 
-  const { isLoading: isLoadingSpending, data: spendingData } = useQuery(
+  const {
+    isLoading: isLoadingSpending,
+    error: spendingError,
+    data: spendingData,
+  } = useQuery(
     `spending-${teamSelect}`,
 
     () =>
@@ -65,7 +69,7 @@ const Home: NextPage = () => {
       enabled: !!data,
     }
   );
-  const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
+  const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
 
   // }
   // if (isLoading) return <p>Loading...</p>;
@@ -73,7 +77,7 @@ const Home: NextPage = () => {
   // isLoadingSpending = true;
   return (
     <>
-    {isLargerThan800 ? <NavBar />:null}
+      {isLargerThan800 ? <NavBar /> : null}
       <Swiper
         spaceBetween={50}
         slidesPerView={1}
@@ -97,7 +101,8 @@ const Home: NextPage = () => {
             </Container>
           </SwiperSlide>
         ) : (
-          data?.map((el: ApiReturn) => {
+          data?.length > 0 &&
+          data.map((el: ApiReturn) => {
             console.log(el);
             return (
               <SwiperSlide style={{ padding: "0px 10px" }} key={el.id}>
@@ -158,6 +163,7 @@ const Home: NextPage = () => {
             {spendingData &&
               spendingData.map((el: any, i: number) => {
                 console.log("spendingData", el);
+
                 return (
                   <Transaction
                     key={i}
