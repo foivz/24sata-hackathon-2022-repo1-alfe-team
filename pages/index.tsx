@@ -10,18 +10,22 @@ import {
 	useMediaQuery,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import { Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { createContext } from "vm";
 import AddTeamCard from "../components/AddTeamCard";
 import MobileNav from "../components/MobileNav";
 import NavBar from "../components/Navbar";
 import { TeamsSelect } from "../components/TeamsSelect";
 import { Transaction } from "../components/Transaction";
 import { ApiReturn } from "./api/teams";
+import { TransactionContext } from "./_app";
+
+
 
 const Home: NextPage = () => {
 	const { isLoading, error, data } = useQuery("teams", () =>
@@ -98,11 +102,12 @@ const Home: NextPage = () => {
 						</Text>
 					</Link>
 				</HStack>
-				{teamSelect !== data?.length ? (
+        {isLoading === false &&
+        teamSelect !== data?.length && 
 					<TransactionsDisplay id={data[teamSelect || 0]?.id || ""} />
-				) : null}
+				}
 			</Container>
-			{isLargerThan800 ? null : <MobileNav />}
+			{isLargerThan800 ? null : <MobileNav location="home" />}
 		</>
 	);
 };
@@ -112,6 +117,28 @@ export default Home;
 // http://localhost:3000/api/teams/join?teamId=cl1ht5d2p032338e0n82jxrm1
 
 export function TransactionsDisplay({ id }: { id: any }) {
+  const [transaction, setTransaction] = useContext(TransactionContext);
+  console.log("🌙🌙🌙", transaction?.id, "🤘🤘🤘", id);
+  if(transaction && transaction?.id === id)
+  return (
+		<Stack spacing="5" mt="5" paddingX={2}>
+      {transaction.spendingData.map((el: any, i: number) => {
+        return (
+          <Transaction
+            key={i}
+            index={i}
+            amount={el.amount}
+            itemName={el.item.name}
+            userId={el.userId}
+            username={el.user.name}
+            totalPrice={el.amount * el.price}
+            userImage="/" // {el.user.image}
+          />
+        )
+      })}
+  </Stack>
+  )
+
 	const {
 		isLoading: isLoadingSpending,
 		error: spendingError,
@@ -125,6 +152,7 @@ export function TransactionsDisplay({ id }: { id: any }) {
 			enabled: !!id,
 		}
 	);
+  !isLoadingSpending && setTransaction({spendingData, id});
 	return (
 		<Stack spacing="5" mt="5" paddingX={2}>
 			{isLoadingSpending &&
@@ -149,12 +177,13 @@ export function TransactionsDisplay({ id }: { id: any }) {
 						</>
 					);
 				})}
-
+      
 			{spendingData &&
 				spendingData.map((el: any, i: number) => {
 					return (
 						<Transaction
 							key={i}
+              index={i}
 							amount={el.amount}
 							itemName={el.item.name}
 							userId={el.userId}
