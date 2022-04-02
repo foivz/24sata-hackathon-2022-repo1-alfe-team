@@ -6,6 +6,9 @@ const prisma = new PrismaClient();
 
 export default NextAuth({
 	callbacks: {
+		async signIn({ user, account, profile, email, credentials }) {
+			return true;
+		},
 		async session({ session, user, token }) {
 			session.role = user.role;
 			session.user_id = user.id;

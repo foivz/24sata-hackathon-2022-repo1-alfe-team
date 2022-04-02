@@ -36,3 +36,4 @@ Pozz svima!
 - za kupnje teama -> GET : api/spending/
 - za dodat kupnje teams -> POST : api/spending/ -> amount, teamdId, itemId
 - za join u team - GET -> /api/teams/join?teamId=id
+- za mog usera PATCH -> /api/me/

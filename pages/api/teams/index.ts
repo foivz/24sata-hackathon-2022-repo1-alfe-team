@@ -15,11 +15,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 				const complaint = await prisma.teams.findMany({
 					where: {
-						TeamsAndUser: {
-							some: {
-								userId: session1?.user_id,
+						OR: [
+							{
+								TeamsAndUser: {
+									some: {
+										userId: session1?.user_id,
+									},
+								},
 							},
-						},
+							{
+								ownerId: session1?.user_id,
+							},
+						],
 					},
 					include: {
 						TeamsAndUser: true,
