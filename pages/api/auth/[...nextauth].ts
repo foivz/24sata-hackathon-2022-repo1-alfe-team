@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+
 const prisma = new PrismaClient();
 
 export default NextAuth({
@@ -24,6 +25,6 @@ export default NextAuth({
 			clientId:
 				"559985844705-ica1dtqkj6s6nncbjjs099ga7s1g3i4q.apps.googleusercontent.com",
 			clientSecret: "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",
-		}),
+		})
 	],
 });
