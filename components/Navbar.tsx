@@ -19,9 +19,6 @@ import {
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { BiHomeSmile } from 'react-icons/bi';
-import { BsPlusSquare } from 'react-icons/bs';
-import { FiSettings } from 'react-icons/fi';
 
 const NavLink = ({ children }: { children: ReactNode }) => (
   <Link
@@ -44,19 +41,47 @@ export default function NavBar() {
   const { data: session } = useSession();
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} pos="fixed" bottom={0}>
+      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} mb="5">
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+          <Image src={useColorModeValue("logo-light.png","logo-dark.png")} w="24" />
+
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
-              <NavLink>
-                <BiHomeSmile />
-              </NavLink>
-              <NavLink>
-                <BsPlusSquare />
-              </NavLink>
-              <NavLink>
-                <FiSettings />
-              </NavLink>
+              <Button onClick={toggleColorMode} variant={"ghost"}>
+                {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+              </Button>
+
+              {session ? (
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={"full"}
+                    variant={"link"}
+                    cursor={"pointer"}
+                    minW={0}
+                  >
+                    <Avatar size={"sm"} src={session.user?.image || ""} />
+                  </MenuButton>
+                  <MenuList alignItems={"center"}>
+                    <br />
+                    <Center>
+                      <Avatar size={"2xl"} src={session.user?.image || ""} />
+                    </Center>
+                    <br />
+                    <Center>
+                      <p>{session.user?.name}</p>
+                    </Center>
+                    <br />
+                    <MenuDivider />
+                    <MenuItem>Vaš Profil</MenuItem>
+                    <MenuItem onClick={() => signOut()}>Odjava</MenuItem>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <Button variant={"ghost"} onClick={() => signIn()}>
+                  Login
+                </Button>
+              )}
             </Stack>
           </Flex>
         </Flex>

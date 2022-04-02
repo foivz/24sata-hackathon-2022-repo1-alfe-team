@@ -14,7 +14,6 @@ import {
   chakra,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import Navbar from "../components/Navbar";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Teams, TeamsAndUser, User } from "@prisma/client";
 import { ApiReturn } from "./api/teams";
