@@ -24,6 +24,7 @@ import { useQuery } from "react-query";
 import { TransactionsDisplay } from "..";
 import { BarChart } from "../../components/BarChart";
 import MemberCard from "../../components/MemberCard";
+import { Transaction } from "../../components/Transaction";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	// const { teamId } = ctx.query;
@@ -64,7 +65,7 @@ const Index = (props: any) => {
 	console.log("spendingPerUser", spendingPerUser);
 	const thisTeamSpending = thisTeam?.spending;
 	console.log(thisTeam?.TeamsAndUser);
-
+	const [mth, setMth] = useState(0);
 	return (
 		<Container maxW="container.lg" paddingX={0}>
 			<HStack
@@ -153,7 +154,38 @@ const Index = (props: any) => {
 						{/* <Text fontWeight='medium' fontSize={'md'}>Predviđena potrošnja za idući mjesec</Text> */}
 
 						<Stack justifyContent={"end"}>
-							<BarChart />
+							<BarChart setMth={(e) => setMth(e)} />
+							<Text fontWeight={'medium'} px={4}>{mth===4?'Predicted Spending':'Spending'}</Text>
+							<Transaction
+								key={thisTeam?.id}
+								amount={1}
+								index={0}
+								userId={thisTeam?.ownerId}
+								userImage={thisTeam?.owner?.images}
+								itemName={thisTeam?.owner?.name}
+								totalPrice={
+									(spendingPerUser && spendingPerUser?.[thisTeam?.ownerId]) || 0
+								}
+								username={thisTeam?.owner?.role}
+								nodate={true}
+							/>
+							{thisTeam?.TeamsAndUser?.map((el: any) => {
+								return (
+									<Transaction
+									key={thisTeam?.id}
+									amount={1}
+									index={0}
+									userId={el.userId}
+									userImage={el.user.images}
+									itemName={el.user.name}
+									totalPrice={
+										(spendingPerUser && spendingPerUser?.[thisTeam?.userId]) || 0
+									}
+									username={el.user.role}
+									nodate={true}
+									/>
+								);
+							})}
 						</Stack>
 					</TabPanel>
 					<TabPanel></TabPanel>
