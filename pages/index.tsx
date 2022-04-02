@@ -17,33 +17,52 @@ import type { NextPage } from "next";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Teams, TeamsAndUser, User } from "@prisma/client";
 import { ApiReturn } from "./api/teams";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 import { useState } from "react";
-import NavBar from "../components/Navbar";
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
     fetch("/api/teams").then((res) => res.json())
   );
   const [teamSelect, setTeamsSelect] = useState(0);
   console.log("🔥", data);
-  if (isLoading) return <p>Loading...</p>;
+  // if (isLoading) return <p>Loading...</p>;
 
   return (
     <>
-      <NavBar />
-      {data?.map((el: ApiReturn, i) => {
-        if (teamSelect == i) return <TeamsSelect el={el} key={el.id} />;
+      
+      <Swiper
+        spaceBetween={50}
+        slidesPerView={1}
+        onSlideChange={() => console.log('slide change')}
+        onSwiper={(swiper: any) => console.log(swiper)}
+        pagination={{ clickable: true }}
+        style={{ padding: '24px 0px'}}
+      >
+        {data?.map((el: ApiReturn) => {
+        console.log(el);
+        return (
+          <SwiperSlide style={{padding: '0px 10px'}}>
+            <TeamsSelect el={el} key={el.id} />
+          </SwiperSlide>
+        );
       })}
-      <HStack justifyContent="space-between" alignItems="center" mt="10">
-        <Heading size="lg" my="auto">
-          Last Transactions
+      </Swiper>
+
+      <HStack justifyContent="space-between" alignItems="center" paddingX={4}>
+        <Heading size="md" my="auto">
+          Transactions
         </Heading>
         <Link>
-          <Text color="gray.400">see more</Text>
+          <Text size="sm" color="gray.400">see more</Text>
         </Link>
       </HStack>
-      <Stack spacing="5" mt="5">
+      <Stack spacing="5" mt="5" paddingX={2}>
         {[1, 2, 3, 4, 5].map((i) => {
-          return <Transaction key={i} />;
+          return <Transaction key={i} id={i} />;
         })}
       </Stack>
     </>
