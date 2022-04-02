@@ -33,11 +33,13 @@ export default function MobileNav() {
   const { data: session } = useSession();
   return (
     <>
+      <Box p={9}></Box>
       <Box
         px={4}
         shadow={'0px -2px 10px 5px #00000009'}
         pos="fixed"
         bottom={0}
+        backgroundColor="white"
         width="full"
         left={0}
         // w={{ base: "full", lg: "20px" }}

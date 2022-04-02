@@ -15,6 +15,7 @@ import {
   Container,
   Skeleton,
   SkeletonCircle,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -34,6 +35,7 @@ import { motion } from "framer-motion";
 import AddTeamCard from "../components/AddTeamCard";
 import MobileNav from "../components/MobileNav";
 import { Pagination } from "swiper";
+import NavBar from "../components/Navbar";
 
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
@@ -62,12 +64,15 @@ const Home: NextPage = () => {
       enabled: !!data,
     }
   );
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
+
   // }
   // if (isLoading) return <p>Loading...</p>;
   // console.log("🌙🌙🌙", spendingData, isLoadingSpending);
   // isLoadingSpending = true;
   return (
     <>
+    {isLargerThan800 ? <NavBar />:null}
       <Swiper
         spaceBetween={50}
         slidesPerView={1}

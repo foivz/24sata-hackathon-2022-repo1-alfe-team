@@ -19,6 +19,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { FiChevronLeft, FiSettings } from "react-icons/fi";
 import MobileNav from "../../components/MobileNav";
 import { GetServerSideProps } from "next";
+import MemberCard from "../../components/MemberCard";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // const { teamId } = ctx.query;
@@ -35,18 +36,18 @@ const Index = (props: any) => {
   const router = useRouter();
   const { teamId } = router.query;
 
-  const { isLoading, error, data } = useQuery(`spending-${teamId}`, () =>
-    fetch(`/api/spending?teamId=${teamId}`).then((res) => res.json())
-  );
-  const { data: teamsData } = useQuery(`teams`, () =>
-    fetch(`/api/teams`).then((res) => res.json())
-  );
-  const thisTeamSpending = teamsData?.filter((el: any) => el.id == teamId)[0]
-    .spending;
-  console.log(data);
+  // const { isLoading, error, data } = useQuery(`spending-${teamId}`, () =>
+  //   fetch(`/api/spending?teamId=${teamId}`).then((res) => res.json())
+  // );
+  // const { data: teamsData } = useQuery(`teams`, () =>
+  //   fetch(`/api/teams`).then((res) => res.json())
+  // );
+  // const thisTeamSpending = teamsData?.filter((el: any) => el.id == teamId)[0]
+  //   .spending;
+  // console.log(data);
   return (
     <Box>
-      <HStack p="5" justifyContent="space-between">
+      <HStack px="4" py="2" justifyContent="space-between">
         <IconButton
           aria-label="Search database"
           icon={<FiChevronLeft />}
@@ -62,7 +63,7 @@ const Index = (props: any) => {
       </HStack>
       <VStack spacing="-1" color="gray.600">
         <Text>spending</Text>
-        <Heading color="black">{thisTeamSpending}</Heading>
+        <Heading color="black">{"1 543,34"}</Heading>
         <chakra.span fontSize="sm" fontWeight="normal">
           HRK
         </chakra.span>
@@ -76,8 +77,10 @@ const Index = (props: any) => {
 
         <TabPanels>
           <TabPanel>{}</TabPanel>
-          <TabPanel>
-            <p>two!</p>
+          <TabPanel p={0}>
+            {[0,1,2,3,4,5].map((el: any) => (
+              <MemberCard key={el} />
+            ))}
           </TabPanel>
           <TabPanel>
             <p>three!</p>
