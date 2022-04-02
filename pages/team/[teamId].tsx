@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		},
 	};
 };
-
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const Index = (props: any) => {
 	const router = useRouter();
 	const { teamId } = router.query;
@@ -155,7 +155,7 @@ const Index = (props: any) => {
 
 						<Stack justifyContent={"end"}>
 							<BarChart setMth={(e) => setMth(e)} />
-							<Text fontWeight={'medium'} px={4}>{mth===4?'Predicted Spending':'Spending'}</Text>
+							<Text fontWeight={'medium'} px={4}>{mth===4?`Predicted Spending ${months[mth]}`:`Spending ${months[mth]}`}</Text>
 							<Transaction
 								key={thisTeam?.id}
 								amount={1}
