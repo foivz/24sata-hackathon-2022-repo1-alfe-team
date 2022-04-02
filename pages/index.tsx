@@ -120,44 +120,52 @@ const Home: NextPage = () => {
             </Text>
           </Link>
         </HStack>
-        <Stack spacing="5" mt="5" paddingX={2}>
-          {isLoadingSpending &&
-            [1, 2, 3, 4].map((el) => {
-              return (
-                <>
-                  <HStack justifyContent="space-between" paddingX={2}>
-                    <HStack alignItems={"center"} height={"min-content"}>
-                      <SkeletonCircle size="12" />
-                      <Stack spacing={2}>
-                        <Skeleton w="32" h="5" />
-                        <Skeleton w="32" h="3" />
+        {teamSelect !== data?.length ? (
+          <Stack spacing="5" mt="5" paddingX={2}>
+            {isLoadingSpending &&
+              [1, 2, 3, 4].map((el) => {
+                return (
+                  <>
+                    <HStack justifyContent="space-between" paddingX={2}>
+                      <HStack alignItems={"center"} height={"min-content"}>
+                        <SkeletonCircle size="12" />
+                        <Stack spacing={2}>
+                          <Skeleton w="32" h="5" />
+                          <Skeleton w="32" h="3" />
+                        </Stack>
+                      </HStack>
+                      <Stack textAlign="right" spacing={1}>
+                        <Skeleton w="24" h="4" />
+                        <Text
+                          fontWeight="normal"
+                          fontSize="sm"
+                          color="gray.400"
+                        >
+                          <Skeleton w="24" h="4" />
+                        </Text>
                       </Stack>
                     </HStack>
-                    <Stack textAlign="right" spacing={1}>
-                      <Skeleton w="24" h="4" />
-                      <Text fontWeight="normal" fontSize="sm" color="gray.400">
-                        <Skeleton w="24" h="4" />
-                      </Text>
-                    </Stack>
-                  </HStack>
-                </>
-              );
-            })}
-          {spendingData?.map((el: any, i: number) => {
-            console.log("spendingData", el);
-            return (
-              <Transaction
-                key={i}
-                amount={el.amount}
-                itemName={el.item.name}
-                userId={el.userId}
-                username={el.user.name}
-                totalPrice={el.amount * el.item.price}
-                userImage={el.user.image}
-              />
-            );
-          })}
-        </Stack>
+                  </>
+                );
+              })}
+
+            {spendingData &&
+              spendingData.map((el: any, i: number) => {
+                console.log("spendingData", el);
+                return (
+                  <Transaction
+                    key={i}
+                    amount={el.amount}
+                    itemName={el.item.name}
+                    userId={el.userId}
+                    username={el.user.name}
+                    totalPrice={el.amount * el.item.price}
+                    userImage={el.user.image}
+                  />
+                );
+              })}
+          </Stack>
+        ) : null}
       </Container>
 
       <Nav />

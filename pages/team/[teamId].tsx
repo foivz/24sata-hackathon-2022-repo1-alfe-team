@@ -51,8 +51,8 @@ const Index = (props: any) => {
           aria-label="Search database"
           icon={<FiChevronLeft />}
           variant="ghost"
+          onClick={() => router.push(`/`)}
         />
-        {/* <FiChevronLeft /> */}
         <Heading size="sm">Team Alfe</Heading>
         <IconButton
           aria-label="Search database"
