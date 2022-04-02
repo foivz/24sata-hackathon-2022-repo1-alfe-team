@@ -86,7 +86,6 @@ export default function NavBar() {
           </Flex>
         </Flex>
       </Box>
-      <Box p={6}></Box>
     </>
   );
 }
