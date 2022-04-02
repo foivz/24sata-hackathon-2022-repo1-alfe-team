@@ -1,3 +1,4 @@
+import { TeamsSelect } from "./TeamsSelect";
 import { Transaction } from "../components/Transaction";
 import {
   Avatar,
@@ -15,42 +16,29 @@ import {
 import type { NextPage } from "next";
 import Navbar from "../components/Navbar";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { Teams, TeamsAndUser, User } from "@prisma/client";
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("repoData", () =>
     fetch("/api/teams").then((res) => res.json())
   );
   console.log("🔥", data);
+  if (isLoading) return <p>Loading...</p>;
+
   return (
     <>
-      <Stack
-        w={"full"}
-        bgColor={useColorModeValue("gray.50", "gray.700")}
-        rounded="lg"
-        shadow={useColorModeValue("lg", "sm")}
-        _hover={{ opacity: 0.95, shadow: "md" }}
-        padding="7"
-        minH={{ base: "52", md: "64" }}
-        justifyContent="space-between"
-      >
-        <Heading size="lg">Team Alfe</Heading>
-        <HStack justifyContent="space-between" alignItems="center">
-          <AvatarGroup>
-            {[1, 2, 3, 4].map((i) => (
-              <Avatar key={i} size="md"></Avatar>
-            ))}
-          </AvatarGroup>
-          <Box>
-            <Text>Spending</Text>
-            <Heading>
-              1352,53
-              <chakra.span fontSize="sm" fontWeight="normal">
-                {" "}
-                HRK
-              </chakra.span>
-            </Heading>
-          </Box>
-        </HStack>
-      </Stack>
+      {data?.map(
+        (
+          el: Teams & {
+            TeamsAndUser: (TeamsAndUser & {
+              user: User;
+            })[];
+            owner: User;
+          }
+        ) => {
+          console.log(el);
+          return <TeamsSelect el={el} key={el.id} />;
+        }
+      )}
       <HStack justifyContent="space-between" alignItems="center" mt="10">
         <Heading size="lg" my="auto">
           Transactions
