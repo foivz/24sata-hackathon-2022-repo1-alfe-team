@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
 	Box,
 	Button,
@@ -17,7 +18,6 @@ import {
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
 import { motion } from "framer-motion";
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FiChevronLeft, FiPlus, FiSettings } from "react-icons/fi";
@@ -27,17 +27,20 @@ import { BarChart } from "../../components/BarChart";
 import MemberCard from "../../components/MemberCard";
 import { Transaction } from "../../components/Transaction";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	// const { teamId } = ctx.query;
-	// const res = await fetch(`/api/spending?teamId=${teamId}`);
-	// const data = await res.json();
-	return {
-		props: {
-			teamId: 1,
-		},
-	};
-};
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const months = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+];
 const Index = (props: any) => {
 	const router = useRouter();
 	const { teamId } = router.query;
@@ -65,6 +68,7 @@ const Index = (props: any) => {
 	const thisTeamSpending = thisTeam?.spending ?? 0;
 	console.log(thisTeam?.TeamsAndUser);
 	const [mth, setMth] = useState(0);
+
 	return (
 		<Container maxW="container.lg" paddingX={0}>
 			<HStack
@@ -125,7 +129,7 @@ const Index = (props: any) => {
 
 				<TabPanels>
 					<TabPanel>
-						<TransactionsDisplay id={thisTeam?.id || undefined} />
+						<TransactionsDisplay key={"test"} id={thisTeam?.id || undefined} />
 						<Button
 							colorScheme={"brand"}
 							textColor="black"
@@ -174,7 +178,11 @@ const Index = (props: any) => {
 
 						<Stack justifyContent={"end"}>
 							<BarChart setMth={(e) => setMth(e)} />
-							<Text fontWeight={'medium'} px={4}>{mth===4?`Predicted Spending ${months[mth]}`:`Spending ${months[mth]}`}</Text>
+							<Text fontWeight={"medium"} px={4}>
+								{mth === 4
+									? `Predicted Spending ${months[mth]}`
+									: `Spending ${months[mth]}`}
+							</Text>
 							<Transaction
 								key={thisTeam?.id}
 								amount={1}
@@ -191,17 +199,19 @@ const Index = (props: any) => {
 							{thisTeam?.TeamsAndUser?.map((el: any) => {
 								return (
 									<Transaction
-									key={thisTeam?.id}
-									amount={1}
-									index={0}
-									userId={el.userId}
-									userImage={el.user.images}
-									itemName={el.user.name}
-									totalPrice={
-										(spendingPerUser && spendingPerUser?.[thisTeam?.userId]) || 0
-									}
-									username={el.user.role}
-									nodate={true}
+										key={thisTeam?.id}
+										amount={1}
+										index={0}
+										userId={el.userId}
+										userImage={el.user.images}
+										itemName={el.user.name}
+										totalPrice={
+											(spendingPerUser &&
+												spendingPerUser?.[thisTeam?.userId]) ||
+											0
+										}
+										username={el.user.role}
+										nodate={true}
 									/>
 								);
 							})}
@@ -212,6 +222,10 @@ const Index = (props: any) => {
 			</Tabs>
 		</Container>
 	);
+};
+
+Index.getInitialProps = () => {
+	return {};
 };
 
 export default Index;

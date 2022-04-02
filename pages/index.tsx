@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { default as NextLink } from "next/link";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useQuery } from "react-query";
 import { Pagination } from "swiper";
 import "swiper/css";
@@ -118,7 +118,10 @@ const Home: NextPage = () => {
 					</Link>
 				</HStack>
 				{isLoading === false && teamSelect !== data?.length && (
-					<TransactionsDisplay id={data[teamSelect || 0]?.id || ""} />
+					<TransactionsDisplay
+						key={"test"}
+						id={data[teamSelect || 0]?.id || ""}
+					/>
 				)}
 			</Container>
 			{isLargerThan800 ? null : <MobileNav location="home" />}
@@ -150,7 +153,7 @@ export function TransactionsDisplay({ id }: { id: any }) {
 				(id === undefined &&
 					[1, 2, 3, 4].map((el) => {
 						return (
-							<>
+							<Fragment key={el}>
 								<HStack justifyContent="space-between" paddingX={2}>
 									<HStack alignItems={"center"} height={"min-content"}>
 										<SkeletonCircle size="12" />
@@ -166,7 +169,7 @@ export function TransactionsDisplay({ id }: { id: any }) {
 										</Text>
 									</Stack>
 								</HStack>
-							</>
+							</Fragment>
 						);
 					}))}
 
