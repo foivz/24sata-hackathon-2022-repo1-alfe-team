@@ -72,7 +72,7 @@ const Index = (props: any) => {
   console.log("spendingPerUser", spendingPerUser);
   const thisTeamSpending = thisTeam?.spending;
   console.log(thisTeam?.TeamsAndUser);
-  console.log("😥😥😥", teamsData);
+
   return (
     <Container maxW="container.lg" paddingX={0}>
       <HStack
@@ -123,7 +123,7 @@ const Index = (props: any) => {
         <TabPanels>
           <TabPanel>
             <TransactionsDisplay
-              id={'123'}
+              id={thisTeam?.id}
             />
           </TabPanel>
           <TabPanel p={0}>

@@ -9,11 +9,8 @@ import { createContext } from "react";
 import "../styles/globals.css";
 
 const queryClient = new QueryClient();
-export const TransactionContext = createContext<any>(null);
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-	const [transaction, setTransaction] = useState(null)
-
 	const theme = extendTheme({
 		colors: {
 			brand: {
@@ -28,16 +25,14 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
 	return (
 		<SessionProvider session={session}>
-			<TransactionContext.Provider value={[transaction, setTransaction]}>
-				<QueryClientProvider client={queryClient}>
-					<ChakraProvider theme={theme} >
-						<Container maxW="container.xl" minH="90vh" paddingX={0}>
-							<Component {...pageProps}/>
-							<ToastContainer />
-						</Container>
-					</ChakraProvider>
-				</QueryClientProvider>
-			</TransactionContext.Provider>
+			<QueryClientProvider client={queryClient}>
+				<ChakraProvider theme={theme} >
+					<Container maxW="container.xl" minH="90vh" paddingX={0}>
+						<Component {...pageProps}/>
+						<ToastContainer />
+					</Container>
+				</ChakraProvider>
+			</QueryClientProvider>
 		</SessionProvider>
 	);
 }
