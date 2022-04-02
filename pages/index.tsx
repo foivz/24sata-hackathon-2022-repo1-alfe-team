@@ -76,7 +76,7 @@ const Home: NextPage = () => {
           return <Transaction key={i} id={i} />;
         })}
       </Stack>
-      <MobileNav />
+      {/* <MobileNav /> */}
     </>
   );
 };
