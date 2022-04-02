@@ -49,6 +49,28 @@ const Home: NextPage = () => {
           </SwiperSlide>
         );
       })}
+        <SwiperSlide style={{padding: '0px 10px'}}>
+          <Stack
+            w={"full"} //
+            bgColor={useColorModeValue("gray.50", "gray.700")}
+            rounded="lg" //
+            border={'1px'}
+            borderColor={useColorModeValue("gray.200", "gray.700")}
+            borderStyle={'dashed'}
+            _hover={{
+              opacity: 0.95,
+              shadow: "md",
+            }}
+            padding="7"
+            minH={{
+              base: "52",
+              md: "64",
+            }}
+            justifyContent="space-between"
+          >
+            
+          </Stack>
+        </SwiperSlide>
       </Swiper>
 
       <HStack justifyContent="space-between" alignItems="center" paddingX={4}>
