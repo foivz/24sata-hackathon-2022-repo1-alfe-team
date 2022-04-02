@@ -19,10 +19,13 @@ import {
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { BiHomeSmile } from "react-icons/bi";
-import { BsPlusSquare } from "react-icons/bs";
-import { FiSettings } from "react-icons/fi";
-import { IconButton } from "@chakra-ui/react";
+import { BiHomeSmile } from 'react-icons/bi';
+import { BsPlusSquare } from 'react-icons/bs';
+import { FiSettings } from 'react-icons/fi';
+import { IconButton } from '@chakra-ui/react';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+
+
 
 export default function MobileNav() {
   const { colorMode, toggleColorMode } = useColorMode();

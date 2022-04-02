@@ -23,7 +23,12 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { useState } from "react";
-import MobileNav from "../components/MobileNav";
+import Nav from "../components/Nav";
+
+import { PlusSquareIcon } from "@chakra-ui/icons";
+import { BiPlus } from "react-icons/bi";
+import { motion } from "framer-motion";
+import AddTeamCard from "../components/AddTeamCard";
 
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
@@ -35,6 +40,12 @@ const Home: NextPage = () => {
   // console.log("teamId", teamId, teamSelect);
   // var spendingData = null;
   // if (data) {
+
+  // console.log("🔥", data);
+  // if (isLoading) return <p>Loading...</p>;
+  const MotionBox = motion(Box);
+  const MotionStack = motion(Stack);
+
   const { isLoading: isLoadingSpending, data: spendingData } = useQuery(
     `spending-${teamSelect}`,
 
@@ -62,11 +73,14 @@ const Home: NextPage = () => {
         {data?.map((el: ApiReturn) => {
           console.log(el);
           return (
-            <SwiperSlide key={el.id} style={{ padding: "0px 10px" }}>
-              <TeamsSelect el={el} />
+            <SwiperSlide style={{ padding: "0px 10px" }} key={el.id}>
+              <TeamsSelect el={el} key={el.id} />
             </SwiperSlide>
           );
         })}
+        <SwiperSlide style={{ padding: "0px 10px" }}>
+          <AddTeamCard />
+        </SwiperSlide>
       </Swiper>
 
       <HStack justifyContent="space-between" alignItems="center" paddingX={4}>
@@ -94,7 +108,7 @@ const Home: NextPage = () => {
           );
         })}
       </Stack>
-      <MobileNav />
+      <Nav />
     </>
   );
 };

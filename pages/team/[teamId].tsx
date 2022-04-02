@@ -19,6 +19,20 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { FiChevronLeft, FiSettings } from "react-icons/fi";
 import MobileNav from "../../components/MobileNav";
 const Index = () => {
+import { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // const { teamId } = ctx.query;
+  // const res = await fetch(`/api/spending?teamId=${teamId}`);
+  // const data = await res.json();
+  return {
+    props: {
+      teamId: 1
+    },
+  };
+}
+
+const Index = (props: any) => {
   const router = useRouter();
   const { teamId } = router.query;
 
@@ -28,7 +42,7 @@ const Index = () => {
   const { data: teamsData } = useQuery(`teams`, () =>
     fetch(`/api/teams`).then((res) => res.json())
   );
-  const thisTeamSpending = teamsData?.filter((el) => el.id == teamId)[0]
+  const thisTeamSpending = teamsData.filter((el: any) => el.id == teamId)[0]
     .spending;
   console.log(data);
   return (
