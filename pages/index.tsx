@@ -160,7 +160,7 @@ const Home: NextPage = () => {
         </Stack>
       </Container>
 
-      {/* <Nav /> */}
+      <Nav />
     </>
   );
 };
