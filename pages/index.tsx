@@ -99,10 +99,7 @@ const Home: NextPage = () => {
 					</Link>
 				</HStack>
 				{teamSelect !== data?.length ? (
-					<TransactionsDisplay
-						id={data[teamSelect || 0]?.id || ""}
-						// i={i}
-					/>
+					<TransactionsDisplay id={data[teamSelect || 0]?.id || ""} />
 				) : null}
 			</Container>
 			{isLargerThan800 ? null : <MobileNav />}

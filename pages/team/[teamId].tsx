@@ -100,7 +100,7 @@ const Index = (props: any) => {
         />
       </HStack>
       <Box p={6}></Box>
-      <VStack spacing="-1" color="gray.600">
+      <VStack spacing="-1" color="gray.600" backgroundColor={useColorModeValue("white", "gray.900")}>
         <Text>spending</Text>
         <Heading color="black">{thisTeamSpending}</Heading>
         <chakra.span fontSize="sm" fontWeight="normal">
@@ -130,12 +130,14 @@ const Index = (props: any) => {
           <TabPanel p={0}>
             <Stack px={4} py={4}>
               <MemberCard
-                key={thisTeam.id}
-                userId={thisTeam.ownerId}
-                userImage={thisTeam.owner.images}
-                username={thisTeam.owner.name}
-                userMonthlySpending={spendingPerUser[thisTeam.ownerId] || 0}
-                userType={thisTeam.owner.role}
+                key={thisTeam?.id}
+                userId={thisTeam?.ownerId}
+                userImage={thisTeam?.owner?.images}
+                username={thisTeam?.owner?.name}
+                userMonthlySpending={
+                  (spendingPerUser && spendingPerUser[thisTeam?.ownerId]) || 0
+                }
+                userType={thisTeam?.owner?.role}
               />
               {thisTeam?.TeamsAndUser?.map((el: any) => {
                 console.log(
@@ -149,7 +151,9 @@ const Index = (props: any) => {
                     userId={el.userId}
                     userImage={el.user.images}
                     username={el.user.name}
-                    userMonthlySpending={spendingPerUser[el.userId] || 0}
+                    userMonthlySpending={
+                      (spendingPerUser && spendingPerUser[el.userId]) || 0
+                    }
                     userType={el.user.role}
                   />
                 );
