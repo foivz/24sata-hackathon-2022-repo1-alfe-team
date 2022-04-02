@@ -1,3 +1,4 @@
+import pick from "lodash.pickby";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "../../../lib/middleware/auth";
 import { returnError } from "../../../lib/middleware/error";
@@ -19,12 +20,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				break;
 
 			case "PATCH":
-				const {} = req.body;
+				const d = pick(req.body, (v) => v !== undefined);
+
 				const useredit = await prisma.user.update({
 					where: {
 						id: session.user_id,
 					},
-					data: {},
+					data: d,
 				});
 				res.json(useredit);
 
