@@ -24,6 +24,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { useState } from "react";
+import AddTeamCard from "../components/AddTeamCard";
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
     fetch("/api/teams").then((res) => res.json())
@@ -51,6 +52,9 @@ const Home: NextPage = () => {
           </SwiperSlide>
         );
       })}
+        <SwiperSlide style={{padding: '0px 10px'}}>
+          <AddTeamCard />
+        </SwiperSlide>
       </Swiper>
 
       <HStack justifyContent="space-between" alignItems="center" paddingX={4}>
