@@ -1,3 +1,6 @@
 .swiper-pagination{
     margin-bottom: -10px;
 }
+.swiper-pagination-bullet-active{
+    background: #E5F64A !important;
+}
