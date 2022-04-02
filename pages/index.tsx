@@ -68,7 +68,7 @@ const Home: NextPage = () => {
       <Swiper
         spaceBetween={50}
         slidesPerView={1}
-        onSlideChange={(e) => setTeamsSelect(e.snapIndex)}
+        onSlideChange={(e) => setTeamsSelect((e as any).snapIndex)}
         onSwiper={(swiper: any) => console.log(swiper)}
         modules={[Pagination]}
         pagination={{ clickable: true }}
@@ -103,7 +103,7 @@ const Home: NextPage = () => {
         </Link>
       </HStack>
       <Stack spacing="5" mt="5" paddingX={2}>
-        {spendingData?.map((el, i) => {
+        {spendingData?.map((el: any, i: number) => {
           console.log("spendingData", el);
           return (
             <Transaction
