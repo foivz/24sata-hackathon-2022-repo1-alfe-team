@@ -125,7 +125,7 @@ const Index = (props: any) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <Stack>
+            <Stack px={4} py={4}>
               {thisTeam?.TeamsAndUser?.map((el: any) => {
                 console.log("🔥🔥🔥🔥🔥🔥🔥", el);
                 return (
