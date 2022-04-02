@@ -20,6 +20,7 @@ import { FiChevronLeft, FiSettings } from "react-icons/fi";
 import MobileNav from "../../components/MobileNav";
 import { GetServerSideProps } from "next";
 import MemberCard from "../../components/MemberCard";
+import { useColorModeValue } from "@chakra-ui/system";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // const { teamId } = ctx.query;
@@ -36,6 +37,7 @@ const Index = (props: any) => {
   const router = useRouter();
   const { teamId } = router.query;
 
+
   // const { isLoading, error, data } = useQuery(`spending-${teamId}`, () =>
   //   fetch(`/api/spending?teamId=${teamId}`).then((res) => res.json())
   // );
@@ -47,7 +49,7 @@ const Index = (props: any) => {
   // console.log(data);
   return (
     <Box>
-      <HStack px="4" py="2" justifyContent="space-between">
+      <HStack zIndex={10} backgroundColor={useColorModeValue('white', 'gray.900')} position={'fixed'} w={'full'} top={0} left={0} px="4" py="2" justifyContent="space-between">
         <IconButton
           aria-label="Search database"
           icon={<FiChevronLeft />}
@@ -61,6 +63,7 @@ const Index = (props: any) => {
           variant="ghost"
         />
       </HStack>
+      <Box p={6}></Box>
       <VStack spacing="-1" color="gray.600">
         <Text>spending</Text>
         <Heading color="black">{"1 543,34"}</Heading>
@@ -69,7 +72,7 @@ const Index = (props: any) => {
         </chakra.span>
       </VStack>
       <Tabs>
-        <TabList shadow={"md"}>
+        <TabList zIndex={10} backgroundColor={useColorModeValue('white', 'gray.900')} position={"sticky"} top={12} shadow={"md"}>
           <Tab>Transactions</Tab>
           <Tab>Members</Tab>
           <Tab>Stats</Tab>
