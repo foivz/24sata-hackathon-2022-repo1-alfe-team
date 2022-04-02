@@ -84,7 +84,7 @@ const Index = (props: any) => {
 					variant="ghost"
 					onClick={() => router.push(`/`)}
 				/>
-				<Heading size="sm">{thisTeam.name}</Heading>
+				<Heading size="sm">{thisTeam?.name}</Heading>
 				<IconButton
 					aria-label="Search database"
 					icon={<FiSettings />}
@@ -110,7 +110,7 @@ const Index = (props: any) => {
 					backgroundColor={useColorModeValue("white", "gray.900")}
 					position={"sticky"}
 					top={12}
-					shadow={"md"}
+					// shadow={"md"}
 				>
 					<Tab>Transactions</Tab>
 					<Tab>Members</Tab>
@@ -129,16 +129,11 @@ const Index = (props: any) => {
 								userImage={thisTeam?.owner?.images}
 								username={thisTeam?.owner?.name}
 								userMonthlySpending={
-									(spendingPerUser && spendingPerUser[thisTeam?.ownerId]) || 0
+									(spendingPerUser && spendingPerUser?.[thisTeam?.ownerId]) || 0
 								}
 								userType={thisTeam?.owner?.role}
 							/>
 							{thisTeam?.TeamsAndUser?.map((el: any) => {
-								console.log(
-									"🔥🔥🔥🔥🔥🔥🔥",
-									el.userId,
-									spendingPerUser[el.userId]
-								);
 								return (
 									<MemberCard
 										key={el.id}

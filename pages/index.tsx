@@ -11,6 +11,7 @@ import {
 	useMediaQuery,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import { default as NextLink } from "next/link";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { Pagination } from "swiper";
@@ -151,10 +152,16 @@ export function TransactionsDisplay({ id }: { id: any }) {
 					);
 				})}
 
-			{spendingData.length === 0 && (
-				<Center mt={"44"}>
+			{spendingData?.length === 0 && (
+				<Center my={"44"}>
 					<Text fontSize="sm" color="gray.400">
-						No transactions yet
+						No transactions yet,{" "}
+						<Link
+							href={`/transaction/add?teamId=${spendingData.te}`}
+							as={NextLink}
+						>
+							Add one
+						</Link>
 					</Text>
 				</Center>
 			)}

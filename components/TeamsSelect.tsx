@@ -55,7 +55,7 @@ export function TeamsSelect({ el }: { el: ApiReturn }) {
 							rounded={"full"}
 							bg={"brand.500"}
 							onClick={() => {
-								router.push(`/tranastion/add?teamId=${el.id}`);
+								router.push(`/transaction/add?teamId=${el.id}`);
 							}}
 						/>
 					</HStack>
