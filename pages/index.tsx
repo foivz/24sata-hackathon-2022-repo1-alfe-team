@@ -27,6 +27,7 @@ import { PlusSquareIcon } from "@chakra-ui/icons";
 import { BiPlus } from "react-icons/bi";
 import { motion } from "framer-motion";
 import AddTeamCard from "../components/AddTeamCard";
+
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
     fetch("/api/teams").then((res) => res.json())
@@ -75,6 +76,7 @@ const Home: NextPage = () => {
           return <Transaction key={i} id={i} />;
         })}
       </Stack>
+      <MobileNav />
     </>
   );
 };

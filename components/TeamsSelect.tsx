@@ -17,6 +17,7 @@ export function TeamsSelect({ el }: { el: ApiReturn }) {
   const allTeamMembers = [el.owner, ...el.TeamsAndUser];
   console.log(allTeamMembers);
   const MotionStack = motion(Stack);  
+
   return (
     <Center>
       <MotionStack
