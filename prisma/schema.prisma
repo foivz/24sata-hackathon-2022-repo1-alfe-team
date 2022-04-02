@@ -54,6 +54,7 @@ model User {
   sessions      Session[]
 
   TeamsAndUser TeamsAndUser[]
+  Owner        Teams[]
   Items        Items[]
   Spending     Spending[]
 }
@@ -70,6 +71,7 @@ model Teams {
   id           String         @id @default(cuid())
   name         String
   ownerId      String
+  owner        User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   TeamsAndUser TeamsAndUser[]
   Spending     Spending[]
 }
