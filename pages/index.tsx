@@ -23,7 +23,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { useState } from "react";
-import MobileNav from "../components/MobileNav";
+import Nav from "../components/Nav";
 
 
 const Home: NextPage = () => {
@@ -68,7 +68,7 @@ const Home: NextPage = () => {
           return <Transaction key={i} id={i} />;
         })}
       </Stack>
-      <MobileNav />
+      <Nav />
     </>
   );
 };

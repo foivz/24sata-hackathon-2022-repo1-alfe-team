@@ -23,6 +23,8 @@ import { BiHomeSmile } from 'react-icons/bi';
 import { BsPlusSquare } from 'react-icons/bs';
 import { FiSettings } from 'react-icons/fi';
 import { IconButton } from '@chakra-ui/react';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+
 
 
 export default function MobileNav() {
