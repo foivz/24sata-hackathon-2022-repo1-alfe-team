@@ -26,6 +26,8 @@ export const withError =
 		try {
 			await handler(req, res);
 		} catch (error: any) {
+			console.log("throw se dog", JSON.stringify(error, null, 2));
+
 			returnError(error, req, res, null);
 		}
 	};
