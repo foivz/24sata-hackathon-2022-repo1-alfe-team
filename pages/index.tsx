@@ -181,6 +181,7 @@ export function TransactionsDisplay({ isLoadingSpending, spendingData }: { isLoa
           return (
             <Transaction
               key={i}
+              index={i}
               amount={el.amount}
               itemName={el.item.name}
               userId={el.userId}
