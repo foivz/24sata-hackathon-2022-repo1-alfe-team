@@ -1,5 +1,6 @@
 import {
 	Box,
+	Button,
 	chakra,
 	Container,
 	Heading,
@@ -19,7 +20,7 @@ import { motion } from "framer-motion";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { FiChevronLeft, FiSettings } from "react-icons/fi";
+import { FiChevronLeft, FiPlus, FiSettings } from "react-icons/fi";
 import { useQuery } from "react-query";
 import { TransactionsDisplay } from "..";
 import { BarChart } from "../../components/BarChart";
@@ -52,9 +53,7 @@ const Index = (props: any) => {
 	//   fetch(`/api/teams`).then((res) => res.json())
 	// );
 	// console.log("🔥🔥🔥", data);
-	const { isLoading, error, data } = useQuery(`spending-${teamId}`, () =>
-		fetch(`/api/spending?teamId=${teamId}`).then((res) => res.json())
-	);
+
 	const { data: teamsData } = useQuery(`teams`, () =>
 		fetch(`/api/teams`).then((res) => res.json())
 	);
@@ -63,7 +62,7 @@ const Index = (props: any) => {
 	);
 	const thisTeam = teamsData?.filter((el: any) => el.id == teamId)[0];
 	console.log("spendingPerUser", spendingPerUser);
-	const thisTeamSpending = thisTeam?.spending;
+	const thisTeamSpending = thisTeam?.spending ?? 0;
 	console.log(thisTeam?.TeamsAndUser);
 	const [mth, setMth] = useState(0);
 	return (
@@ -99,13 +98,19 @@ const Index = (props: any) => {
 				color="gray.600"
 				backgroundColor={useColorModeValue("white", "gray.900")}
 			>
-				<Text>spending</Text>
-				<Heading color="black">{thisTeamSpending}</Heading>
-				<chakra.span fontSize="sm" fontWeight="normal">
+				<Text color={useColorModeValue("gray.800", "gray.400")}>spending</Text>
+				<Heading color={useColorModeValue("brand.800", "brand.400")}>
+					{thisTeamSpending}
+				</Heading>
+				<chakra.span
+					color={useColorModeValue("gray.800", "gray.400")}
+					fontSize="sm"
+					fontWeight="normal"
+				>
 					HRK
 				</chakra.span>
 			</VStack>
-			<Tabs>
+			<Tabs colorScheme={"brand"}>
 				<TabList
 					zIndex={10}
 					backgroundColor={useColorModeValue("white", "gray.900")}
@@ -120,14 +125,27 @@ const Index = (props: any) => {
 
 				<TabPanels>
 					<TabPanel>
-						<TransactionsDisplay id={thisTeam?.id} />
+						<TransactionsDisplay id={thisTeam?.id || undefined} />
+						<Button
+							colorScheme={"brand"}
+							textColor="black"
+							w="full"
+							mt={8}
+							onClick={() => {
+								router.push(`/transactions/transaction?teamId=${thisTeam?.id}`);
+							}}
+							leftIcon={<FiPlus />}
+						>
+							Add transaction
+						</Button>
 					</TabPanel>
 					<TabPanel p={0}>
 						<Stack px={4} py={4}>
 							<MemberCard
+								owner={true}
 								key={thisTeam?.id}
 								userId={thisTeam?.ownerId}
-								userImage={thisTeam?.owner?.images}
+								userImage={thisTeam?.owner?.image}
 								username={thisTeam?.owner?.name}
 								userMonthlySpending={
 									(spendingPerUser && spendingPerUser?.[thisTeam?.ownerId]) || 0
@@ -137,9 +155,10 @@ const Index = (props: any) => {
 							{thisTeam?.TeamsAndUser?.map((el: any) => {
 								return (
 									<MemberCard
+										owner={false}
 										key={el.id}
 										userId={el.userId}
-										userImage={el.user.images}
+										userImage={el.user.image}
 										username={el.user.name}
 										userMonthlySpending={
 											(spendingPerUser && spendingPerUser[el.userId]) || 0

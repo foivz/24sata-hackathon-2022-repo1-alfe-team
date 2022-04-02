@@ -19,15 +19,19 @@ import { FiSearch } from "react-icons/fi";
 import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 import { AddNavbar } from "../teams/add";
+import { useAddItemStore } from "../transaction/add";
+import { queryClient } from "../_app";
 
-interface AddItemProps {}
+interface AddItemProps {
+	embeded?: boolean;
+}
 
 interface AddItemFormData {
 	name: string;
 	price: number;
 }
 
-const AddItem = ({}: AddItemProps) => {
+const AddItem = ({ embeded = false }: AddItemProps) => {
 	const {
 		register,
 		handleSubmit,
@@ -41,6 +45,8 @@ const AddItem = ({}: AddItemProps) => {
 	});
 
 	const url = useForm<{ url: string }>();
+
+	const { setIsOpen, isOpen } = useAddItemStore();
 
 	const onSubmit = async (e: any) => {
 		const a = await axios.get("/api/spending/smart", {
@@ -58,10 +64,10 @@ const AddItem = ({}: AddItemProps) => {
 	};
 
 	return (
-		<Container maxW="container.sm" minH="90vh">
+		<Container maxW="container.sm" minH={!embeded ? "90vh" : "auto"}>
 			<Box>
-				<AddNavbar title="Dodaj proizvod" />
-				<VStack>
+				{!embeded && <AddNavbar title="Dodaj proizvod" />}
+				<VStack spacing={embeded ? 4 : 2}>
 					<FormControl isInvalid={false}>
 						<FormLabel htmlFor="name">Link</FormLabel>
 						<HStack>
@@ -125,23 +131,38 @@ const AddItem = ({}: AddItemProps) => {
 							)}
 						</FormControl>
 					</HStack>
-					<Button
-						isLoading={additem.isLoading}
-						disabled={additem.isLoading}
-						onClick={handleSubmit(async (e) => {
-							try {
-								await additem.mutateAsync({
-									name: e.name,
-									price: e.price,
-								});
 
-								toast("Uspješno dodan proizvod");
-							} catch (error) {}
-						})}
-						w="full"
-					>
-						Dodaj
-					</Button>
+					<HStack w="full">
+						{embeded && (
+							<Button
+								onClick={() => {
+									embeded && setIsOpen(false);
+								}}
+							>
+								Close
+							</Button>
+						)}
+						<Button
+							colorScheme={"brand"}
+							textColor="black"
+							isLoading={additem.isLoading}
+							disabled={additem.isLoading}
+							onClick={handleSubmit(async (e) => {
+								try {
+									await additem.mutateAsync({
+										name: e.name,
+										price: e.price,
+									});
+									queryClient.invalidateQueries("/api/item");
+									embeded && setIsOpen(false);
+									toast("Uspješno dodan proizvod");
+								} catch (error) {}
+							})}
+							w="full"
+						>
+							Dodaj
+						</Button>
+					</HStack>
 				</VStack>
 			</Box>
 		</Container>
