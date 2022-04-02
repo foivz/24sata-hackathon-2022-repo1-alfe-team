@@ -14,7 +14,6 @@ import {
   chakra,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import Navbar from "../components/Navbar";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Teams, TeamsAndUser, User } from "@prisma/client";
 import { ApiReturn } from "./api/teams";
@@ -23,10 +22,12 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { useState } from "react";
 const Home: NextPage = () => {
-  const { isLoading, error, data } = useQuery("repoData", () =>
+  const { isLoading, error, data } = useQuery("teams", () =>
     fetch("/api/teams").then((res) => res.json())
   );
+  const [teamSelect, setTeamsSelect] = useState(0);
   console.log("🔥", data);
   // if (isLoading) return <p>Loading...</p>;
 
@@ -91,3 +92,5 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+// http://localhost:3000/api/teams/join?teamId=cl1hspg2y008238e06xhbuwgo
