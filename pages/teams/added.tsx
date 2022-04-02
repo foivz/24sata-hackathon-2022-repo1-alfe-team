@@ -46,10 +46,12 @@ function getAnimationSettings(originXA: any, originXB: any) {
 
 const Added = ({}: AddedProps) => {
   const notify = () => toast("Link kopiran");
-
+  const [id, setId] = useState('');
   const router = useRouter();
   console.log("router.query.id", router.query);
-  const id = window.location.href.split("?")[1].split("=")[1];
+  useEffect(() => {
+    setId(window.location.href.split("?")[1].split("=")[1]);
+  }, []);
   const us = useClipboard(
     `${isServer ? "" : window.location.origin}/teams/join?id=${id}`
   );
