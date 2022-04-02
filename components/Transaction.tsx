@@ -7,6 +7,7 @@ import {
   Text,
   Link,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import React from "react";
 export function Transaction({
   itemName,
@@ -15,6 +16,7 @@ export function Transaction({
   amount,
   totalPrice,
   userImage,
+  index,
 }: {
   itemName: string;
   username: string;
@@ -22,9 +24,14 @@ export function Transaction({
   totalPrice: number;
   userId: string;
   userImage: string;
+  index?: number;
 }) {
+  const MHStack = motion(HStack);
   return (
-    <HStack justifyContent="space-between" paddingX={2}>
+    <MHStack
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0, transition: { delay: (index||0)*0.1 } }}
+    justifyContent="space-between" paddingX={2}>
       <HStack alignItems={"center"} height={"min-content"}>
         <Avatar
           src={
@@ -55,6 +62,6 @@ export function Transaction({
           May 26, 2022
         </Text>
       </Stack>
-    </HStack>
+    </MHStack>
   );
 }
