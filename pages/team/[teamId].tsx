@@ -17,6 +17,7 @@ import {
 import { useRouter } from "next/router";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { FiChevronLeft, FiSettings } from "react-icons/fi";
+import MobileNav from "../../components/MobileNav";
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -25,10 +26,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // const data = await res.json();
   return {
     props: {
-      teamId: 1
+      teamId: 1,
     },
   };
-}
+};
 
 const Index = (props: any) => {
   const router = useRouter();
@@ -40,9 +41,9 @@ const Index = (props: any) => {
   const { data: teamsData } = useQuery(`teams`, () =>
     fetch(`/api/teams`).then((res) => res.json())
   );
-  const thisTeamSpending = teamsData.filter((el: any) => el.id == teamId)[0]
+  const thisTeamSpending = teamsData?.filter((el: any) => el.id == teamId)[0]
     .spending;
-  console.log(thisTeamSpending);
+  console.log(data);
   return (
     <Box>
       <HStack p="5" justifyContent="space-between">
@@ -74,9 +75,7 @@ const Index = (props: any) => {
         </TabList>
 
         <TabPanels>
-          <TabPanel>
-            <p>one!</p>
-          </TabPanel>
+          <TabPanel>{}</TabPanel>
           <TabPanel>
             <p>two!</p>
           </TabPanel>
@@ -85,6 +84,7 @@ const Index = (props: any) => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <MobileNav />
     </Box>
   );
 };
