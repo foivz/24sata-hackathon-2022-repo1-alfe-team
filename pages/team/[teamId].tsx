@@ -100,7 +100,7 @@ const Index = (props: any) => {
         />
       </HStack>
       <Box p={6}></Box>
-      <VStack spacing="-1" color="gray.600">
+      <VStack spacing="-1" color="gray.600" backgroundColor={useColorModeValue("white", "gray.900")}>
         <Text>spending</Text>
         <Heading color="black">{thisTeamSpending}</Heading>
         <chakra.span fontSize="sm" fontWeight="normal">

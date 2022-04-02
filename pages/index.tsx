@@ -140,7 +140,7 @@ const Home: NextPage = () => {
           />
         ) : null}
       </Container>
-      {isLargerThan800 ? null : <MobileNav />}
+      {isLargerThan800 ? null : <MobileNav location="home" />}
     </>
   );
 };
