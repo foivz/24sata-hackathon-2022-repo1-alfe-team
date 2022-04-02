@@ -52,7 +52,7 @@ const Home: NextPage = () => {
         {data?.map((el: ApiReturn) => {
         console.log(el);
         return (
-          <SwiperSlide style={{padding: '0px 10px'}}>
+          <SwiperSlide style={{padding: '0px 10px'}} key={el.id}>
             <TeamsSelect el={el} key={el.id} />
           </SwiperSlide>
         );
