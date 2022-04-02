@@ -9,3 +9,56 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String  @db.VarChar(200)
+  refresh_token      String? @db.VarChar(600)
+  access_token       String? @db.VarChar(600)
+  expires_at         Int?
+  token_type         String?
+  scope              String? @db.VarChar(200)
+  id_token           String? @db.VarChar(2000)
+  session_state      String? @db.VarChar(400)
+  oauth_token_secret String? @db.VarChar(400)
+  oauth_token        String? @db.VarChar(400)
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  role          Role      @default(USER)
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?   @db.VarChar(500)
+  accounts      Account[]
+  sessions      Session[]
+
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique @db.VarChar(400)
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
