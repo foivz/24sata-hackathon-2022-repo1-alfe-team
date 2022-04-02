@@ -23,6 +23,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { useState } from "react";
+import MobileNav from "../components/MobileNav";
+
+
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
     fetch("/api/teams").then((res) => res.json())
@@ -65,6 +68,7 @@ const Home: NextPage = () => {
           return <Transaction key={i} id={i} />;
         })}
       </Stack>
+      <MobileNav />
     </>
   );
 };
