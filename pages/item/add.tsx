@@ -10,7 +10,6 @@ import {
 	IconButton,
 	Input,
 	InputGroup,
-	InputLeftAddon,
 	VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -32,6 +31,7 @@ const AddItem = ({}: AddItemProps) => {
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		watch,
 		formState: { errors },
 	} = useForm<AddItemFormData>();
@@ -39,6 +39,23 @@ const AddItem = ({}: AddItemProps) => {
 	const additem = useMutation<any, any, any>((data) => {
 		return axios.post("/api/item", data);
 	});
+
+	const url = useForm<{ url: string }>();
+
+	const onSubmit = async (e: any) => {
+		const a = await axios.get("/api/spending/smart", {
+			params: {
+				url: e.url,
+			},
+		});
+
+		if (a.data.status === "SUCCESS") {
+			setValue("name", a.data.name);
+			setValue("price", a.data.price);
+		} else {
+			toast("Nije uspjelo parsiranje");
+		}
+	};
 
 	return (
 		<Container maxW="container.sm" minH="90vh">
@@ -49,10 +66,16 @@ const AddItem = ({}: AddItemProps) => {
 						<FormLabel htmlFor="name">Link</FormLabel>
 						<HStack>
 							<InputGroup>
-								<InputLeftAddon>https://</InputLeftAddon>
-								<Input placeholder="www.example.com" />
+								{/* <InputLeftAddon>https://</InputLeftAddon> */}
+								<Input {...url.register("url")} placeholder="www.example.com" />
 							</InputGroup>
-							<IconButton aria-label="find" icon={<FiSearch />}></IconButton>
+							<IconButton
+								onClick={() => {
+									url.handleSubmit(onSubmit)();
+								}}
+								aria-label="find"
+								icon={<FiSearch />}
+							></IconButton>
 						</HStack>
 						{false && <FormErrorMessage>{""}</FormErrorMessage>}
 					</FormControl>
