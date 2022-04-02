@@ -33,6 +33,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				res.json(team);
 
 				break;
+			case "PATCH":
+				// const spendingEdit = await prisma.spending.({
+				// 	data: {
+				// 		amount: amount,
+				// 		userId: session.user_id,
+				// 		teamsId: teamdId,
+				// 		itemsId: itemId,
+				// 	},
+				// });
+				// res.json(spendingEdit);
+
+				break;
 			default:
 				break;
 		}
