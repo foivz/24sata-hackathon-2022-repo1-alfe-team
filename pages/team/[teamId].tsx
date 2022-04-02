@@ -69,7 +69,7 @@ const Index = (props: any) => {
         </chakra.span>
       </VStack>
       <Tabs>
-        <TabList>
+        <TabList shadow={"md"}>
           <Tab>Transactions</Tab>
           <Tab>Members</Tab>
           <Tab>Stats</Tab>
@@ -83,11 +83,10 @@ const Index = (props: any) => {
             ))}
           </TabPanel>
           <TabPanel>
-            <p>three!</p>
+            
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <MobileNav />
     </Box>
   );
 };

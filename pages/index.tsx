@@ -41,6 +41,7 @@ const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
     fetch("/api/teams").then((res) => res.json())
   );
+
   const [teamSelect, setTeamsSelect] = useState(0);
   if (data) console.log("🔥", data[teamSelect || 0]);
   // const teamId = data[teamSelect || 0]?.id || "";
@@ -165,15 +166,14 @@ const Home: NextPage = () => {
                     userId={el.userId}
                     username={el.user.name}
                     totalPrice={el.amount * el.item.price}
-                    userImage={el.user.image}
+                    userImage= '/' // {el.user.image}
                   />
                 );
               })}
           </Stack>
         ) : null}
       </Container>
-
-      <Nav />
+      {isLargerThan800 ? null:<MobileNav />}
     </>
   );
 };
