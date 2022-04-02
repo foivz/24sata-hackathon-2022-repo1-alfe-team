@@ -18,11 +18,11 @@ import type { NextPage } from "next";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Teams, TeamsAndUser, User } from "@prisma/client";
 import { ApiReturn } from "./api/teams";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 import { useState } from "react";
 import Nav from "../components/Nav";
 
@@ -30,6 +30,8 @@ import { PlusSquareIcon } from "@chakra-ui/icons";
 import { BiPlus } from "react-icons/bi";
 import { motion } from "framer-motion";
 import AddTeamCard from "../components/AddTeamCard";
+import MobileNav from "../components/MobileNav";
+import { Pagination } from "swiper";
 
 const Home: NextPage = () => {
   const { isLoading, error, data } = useQuery("teams", () =>
@@ -68,6 +70,7 @@ const Home: NextPage = () => {
         slidesPerView={1}
         onSlideChange={(e) => setTeamsSelect(e.snapIndex)}
         onSwiper={(swiper: any) => console.log(swiper)}
+        modules={[Pagination]}
         pagination={{ clickable: true }}
         style={{ padding: "24px 0px" }}
       >
@@ -114,6 +117,7 @@ const Home: NextPage = () => {
           );
         })}
       </Stack>
+
       <Nav />
     </>
   );
