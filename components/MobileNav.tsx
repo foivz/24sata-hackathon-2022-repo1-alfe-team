@@ -34,8 +34,8 @@ export default function MobileNav() {
   return (
     <>
       <Box
-        bg={useColorModeValue("gray.100", "gray.900")}
         px={4}
+        shadow={'0px -2px 10px 5px #00000009'}
         pos="fixed"
         bottom={0}
         width="full"
@@ -44,9 +44,9 @@ export default function MobileNav() {
       >
         <Flex h={16} alignItems={"center"} justifyContent={"center"}>
           <Stack direction={"row"} justifyContent={"space-around"} width="full">
-            <IconButton aria-label='Home' icon={<VscHome size="32px" />} size="lg" />
-            <IconButton aria-label='Add new' icon={<BsPlusSquare size="32px" />} size="lg" />
-            <IconButton aria-label='Setting' icon={<IoSettingsOutline size="32px" />} size="lg" />
+            <IconButton backgroundColor={'transparent'} aria-label='Home' icon={<VscHome size="26px" />} size="lg" />
+            <IconButton backgroundColor={'#E4F54A'} shadow={"lg"} aria-label='Add new' icon={<BsPlusSquare size="26px" color="white" />} size="lg" />
+            <IconButton backgroundColor={'transparent'} aria-label='Setting' icon={<IoSettingsOutline size="26px" />} size="lg" />
           </Stack>
         </Flex>
       </Box>
