@@ -32,12 +32,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         temperature: 0.7,
       });
       const GPT3Response = completion.data;
-      const recommendedItems = GPT3Response.choices[0].text
+      const recommendedItems = (GPT3Response as any).choices[0].text
         .trim()
         .split(",")
-        .map((el) => el.trim());
+        .map((el: any) => el.trim());
       //   const recommendedItemsIds = recommendedItems;
-      console.log(GPT3Response.choices[0].text.trim());
+      console.log((GPT3Response as any).choices[0].text.trim());
       console.log(completion.data);
       res.json({
         recommendedItems,
@@ -68,12 +68,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       );
       const GPT3ResponseTeams = completionTeams.data;
-      const recommendedItemsTeams = GPT3ResponseTeams.choices[0].text
+      const recommendedItemsTeams = (GPT3ResponseTeams as any).choices[0].text
         .trim()
         .split(",")
-        .map((el) => el.trim());
+        .map((el: any) => el.trim());
       //   const recommendedItemsIds = recommendedItems;
-      console.log(GPT3ResponseTeams.choices[0].text.trim());
+      console.log((GPT3ResponseTeams as any).choices[0].text.trim());
       console.log(completionTeams.data);
       res.json({
         recommendedItems: recommendedItemsTeams,
