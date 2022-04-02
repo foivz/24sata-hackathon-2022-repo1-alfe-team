@@ -51,7 +51,7 @@ const Home: NextPage = () => {
       })}
       </Swiper>
 
-      <HStack justifyContent="space-between" alignItems="center" paddingX={2}>
+      <HStack justifyContent="space-between" alignItems="center" paddingX={4}>
         <Heading size="md" my="auto">
           Transactions
         </Heading>
@@ -59,7 +59,7 @@ const Home: NextPage = () => {
           <Text size="sm" color="gray.400">see more</Text>
         </Link>
       </HStack>
-      <Stack spacing="5" mt="5">
+      <Stack spacing="5" mt="5" paddingX={2}>
         {[1, 2, 3, 4, 5].map((i) => {
           return <Transaction key={i} id={i} />;
         })}
