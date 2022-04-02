@@ -6,17 +6,18 @@ import "../styles/globals.css";
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-	return (
-		<SessionProvider session={session}>
-			<QueryClientProvider client={queryClient}>
-				<ChakraProvider>
-					<Container maxW="container.xl" minH="90vh">
-						<Component {...pageProps} />
-					</Container>
-				</ChakraProvider>
-			</QueryClientProvider>
-		</SessionProvider>
-	);
+  return (
+    <SessionProvider session={session}>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider>
+          {/* <NavBar /> */}
+          <Container maxW="container.xl" minH="90vh" padding={0}>
+            <Component {...pageProps} />
+          </Container>
+        </ChakraProvider>
+      </QueryClientProvider>
+    </SessionProvider>
+  );
 }
 
 export default MyApp;
