@@ -18,6 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             include: {
               team: true,
               item: true,
+              user: true,
             },
           });
           res.json(team);

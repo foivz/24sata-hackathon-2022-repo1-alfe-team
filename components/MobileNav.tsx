@@ -33,7 +33,15 @@ export default function MobileNav() {
   const { data: session } = useSession();
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} pos="fixed" bottom={0} width="full" left={0}>
+      <Box
+        bg={useColorModeValue("gray.100", "gray.900")}
+        px={4}
+        pos="fixed"
+        bottom={0}
+        width="full"
+        left={0}
+        // w={{ base: "full", lg: "20px" }}
+      >
         <Flex h={16} alignItems={"center"} justifyContent={"center"}>
           <Stack direction={"row"} justifyContent={"space-around"} width="full">
             <IconButton aria-label='Home' icon={<VscHome size="32px" />} size="lg" />
