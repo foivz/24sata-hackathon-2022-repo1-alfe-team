@@ -16,8 +16,8 @@ import { motion } from "framer-motion";
 export function TeamsSelect({ el }: { el: ApiReturn }) {
   const allTeamMembers = [el.owner, ...el.TeamsAndUser];
   console.log(allTeamMembers);
+  const MotionStack = motion(Stack);  
 
-  const MotionStack = motion(Stack);
   return (
     <Center>
       <MotionStack
@@ -48,7 +48,7 @@ export function TeamsSelect({ el }: { el: ApiReturn }) {
               <Avatar
                 key={el.id}
                 size="md"
-                src={el?.user?.image || el?.image}
+                src={(el as any)?.user?.image || (el as any)?.image}
               />
             ))}
           </AvatarGroup>
