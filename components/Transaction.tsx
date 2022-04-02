@@ -30,8 +30,6 @@ export function Transaction({
   console.log("🌙🌙🌙", index);
   return (
     <MHStack
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0, transition: { delay: (index||0)*0.1 } }}
     justifyContent="space-between" paddingX={2}>
       <HStack alignItems={"center"} height={"min-content"}>
         <Avatar
