@@ -36,7 +36,7 @@ import create from "zustand";
 import AddItem from "../item/add";
 import { AddNavbar } from "../teams/add";
 
-export const useAddItemStore = create<any>((set) => ({
+export const useAddItemStore = create<any>((set: any) => ({
 	isOpen: false,
 	setIsOpen: (open: any) => set((state: any) => ({ ...state, isOpen: open })),
 }));
