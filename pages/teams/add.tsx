@@ -26,7 +26,7 @@ const AddTeam = ({}: AddTeamProps) => {
 		formState: { errors },
 	} = useForm<{ name: string }>();
 
-	const mutation = useMutation((newTeam) => {
+	const mutation = useMutation<any, any, any>((newTeam) => {
 		return axios.post("/api/teams", newTeam);
 	});
 
@@ -60,7 +60,16 @@ const AddTeam = ({}: AddTeamProps) => {
 						)}
 					</FormControl>
 
-					<Button w="full">Dodaj</Button>
+					<Button
+						onClick={handleSubmit(async (e) => {
+							await mutation.mutateAsync({
+								name: e.name,
+							});
+						})}
+						w="full"
+					>
+						Dodaj
+					</Button>
 				</VStack>
 			</Box>
 		</Box>

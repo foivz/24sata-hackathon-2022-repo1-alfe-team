@@ -1,15 +1,10 @@
-import { Items, Spending, TeamsAndUser, User } from "@prisma/client";
+import { TeamsAndUser, User } from "@prisma/client";
+import { groupBy } from "lodash";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "../../../lib/middleware/auth";
 import { returnError } from "../../../lib/middleware/error";
 import { prisma } from "../../../lib/prisma";
 
-export const groupBy = function (xs: any, key: any) {
-	return xs.reduce(function (rv: any, x: any) {
-		(rv[x[key]] = rv[x[key]] || []).push(x);
-		return rv;
-	}, {});
-};
 // GET - /api/complaint?id=id - get complaint by id
 // GET - /api/complaint?page=page - get all complaints
 // POST - /api/complaint - create complaint
@@ -57,16 +52,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				});
 
 				if (te.length > 0) {
-					const perTeams = groupBy(te, "teamsId") as {
-						[key: string]: (Spending & {
-							item: Items;
-						})[];
-					};
+					const perTeams = groupBy(te, (r) => r.teamsId);
 
 					const final = complaint.map((t) => {
 						return {
 							...t,
-							spending: perTeams[t.id].reduce(
+							spending: (perTeams[t.id] ?? []).reduce(
 								(r, i) => r + i.item.price * i.amount,
 								0
 							),
