@@ -1,1 +1,1 @@
-## Odstupi Borisu
+## Odstupi
