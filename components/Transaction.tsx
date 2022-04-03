@@ -52,7 +52,7 @@ export function Transaction({
           </Link>
         </Stack>
       </HStack>
-      <Stack textAlign="right" spacing={-1}>
+      <Stack textAlign="right" spacing={-1} w={"140px"}>
         <Text fontWeight="medium" fontSize="lg">
           {totalPrice}{" "}
           <chakra.span fontWeight="normal" fontSize="xs" color={"gray.400"}>
