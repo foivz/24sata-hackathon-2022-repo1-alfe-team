@@ -37,6 +37,7 @@ import { BiBrain } from "react-icons/bi";
 import { BsCheck } from "react-icons/bs";
 import { FiChevronLeft, FiPlus, FiSettings, FiTrash } from "react-icons/fi";
 import { useMutation, useQuery } from "react-query";
+import { toast } from "react-toastify";
 import { TransactionsDisplay } from "..";
 import { BarChart } from "../../components/BarChart";
 import MemberCard from "../../components/MemberCard";
@@ -521,6 +522,7 @@ const ShoppingList = ({}: AddSpendingProps) => {
 											aria-label="re"
 											variant={"ghost"}
 											onClick={() => {
+												toast("Transaction added!");
 												remove(index);
 											}}
 											icon={<BsCheck />}

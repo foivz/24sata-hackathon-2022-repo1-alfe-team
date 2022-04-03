@@ -12,6 +12,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				const teamIdQ = req.query.teamId as string;
 				if (teamIdQ) {
 					const team = await prisma.spending.findMany({
+						orderBy: {
+							createdAt: "desc",
+						},
 						where: {
 							teamsId: teamIdQ,
 						},
