@@ -43,3 +43,6 @@ GPT3 za shopping list: http://localhost:3000/api/openai?type=items_recommend_for
 http://localhost:3000/api/openai?type=items_recommend_for_event&manual_add=kobasica,votka,%C4%8Devapi,ulje, //može i bez eventa onda samo nastavlja.
 
 GPT3 za team: http://localhost:3000/api/openai?type=items_recommend_for_team&teamId=cl1i3gox50045z0vcvdi9m2f6
+
+
+http://localhost:3000/api/openai?type=chat&chat=koja%20je%20razlika%20izme%C4%91u%20prireza%20i%20poreza
