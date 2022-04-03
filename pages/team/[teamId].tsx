@@ -191,7 +191,7 @@ const Index = (props: any) => {
 								amount={1}
 								index={0}
 								userId={thisTeam?.ownerId}
-								userImage={thisTeam?.owner?.images}
+								userImage={thisTeam?.owner?.image}
 								itemName={thisTeam?.owner?.name}
 								totalPrice={
 									(spendingPerUserPerMonth && spendingPerUserPerMonth?.[mth][thisTeam?.ownerId]) || 0
@@ -206,7 +206,7 @@ const Index = (props: any) => {
 										amount={1}
 										index={0}
 										userId={el.userId}
-										userImage={el.user.images}
+										userImage={el.user.image}
 										itemName={el.user.name}
 										totalPrice={
 											(spendingPerUserPerMonth &&
