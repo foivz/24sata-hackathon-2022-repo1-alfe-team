@@ -183,7 +183,7 @@ export function TransactionsDisplay({ id }: { id: any }) {
 							userId={el.userId}
 							username={el.user.name}
 							totalPrice={el.amount * el.price}
-							userImage="/" // {el.user.image}
+							userImage={el.user.image}
 						/>
 					);
 				})}
