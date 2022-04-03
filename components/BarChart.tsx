@@ -62,7 +62,7 @@ export const data = {
   ],
 };
 
-export function BarChart({setMth, data}: { data: any, setMth: (e: number) => void}) {
+export function BarChart({setMth, data, setDivider}: { data: any, setMth: (e: number) => void, setDivider: (e: number) => void }) {
   const [selected, setSelected] = useState(0);
   useEffect(() => {
     setMth(selected);
@@ -86,10 +86,13 @@ export function BarChart({setMth, data}: { data: any, setMth: (e: number) => voi
         return total;
       });
       
+
       // calculate the height of each bar
-      setHeights(totalAmounts.map((e: number) => {
+      setHeights(totalAmounts.map((e: number, i: number) => {
+        if (i===4) return ((totalAmounts[0]+totalAmounts[1]+totalAmounts[2]+totalAmounts[3])/4)/ Math.max(...totalAmounts) * 100;
         return e / Math.max(...totalAmounts) * 100;
       }))
+      setDivider(((totalAmounts[0]+totalAmounts[1]+totalAmounts[2]+totalAmounts[3])/4)/ Math.max(...totalAmounts));
     }
   }, [data]);
   console.log("🌙🔥🌙", data);
