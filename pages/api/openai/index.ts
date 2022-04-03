@@ -25,7 +25,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           (el) => `User bought ${el.amount} ${el.item.name} on ${el.createdAt}`
         )
         .reduce((acc, cur) => acc + `\n${cur}`, "");
-      console.log(itemsThatPersonBoughtIds);
       const completion = await openai.createCompletion("text-davinci-002", {
         prompt: `${itemsThatPersonBoughtIds}\nRecommend items for Roko based on shopping habits. Display only item names, separated with commas.`,
         max_tokens: 200,
@@ -68,6 +67,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       );
       const GPT3ResponseTeams = completionTeams.data;
+      console.log(GPT3ResponseTeams);
       const recommendedItemsTeams = (GPT3ResponseTeams as any).choices[0].text
         .trim()
         .split(",")
@@ -79,6 +79,32 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         recommendedItems: recommendedItemsTeams,
       });
       return;
+    case "items_recommend_for_event":
+      const { event, manual_add } = req.query;
+      //   const itemsInDB = await prisma.items.findMany({});
+      //   if (event) {
+      const completionEvent = await openai.createCompletion(
+        "text-davinci-002",
+        {
+          prompt: event
+            ? `Preporuči namjernica za ${event} na hrvatskom, napiši samo nazive artikala odvojene zarezom.\n${manual_add}`
+            : `Nastavi niz s sličnim namjernica.\n${manual_add}`,
+          max_tokens: 200,
+          temperature: 0.7,
+          frequency_penalty: 0.5,
+        }
+      );
+      //   }
+      const GPT3ResponseEvents = completionEvent.data;
+      console.log(GPT3ResponseEvents);
+      const recommendedItemsEvents = GPT3ResponseEvents.choices[0].text
+        .trim()
+        .split(",")
+        .map((el) => el.trim());
+
+      res.json({
+        recommendedItems: recommendedItemsEvents,
+      });
     default:
       break;
   }
