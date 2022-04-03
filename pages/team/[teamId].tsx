@@ -179,7 +179,7 @@ const Index = (props: any) => {
 
 						<Stack justifyContent={"end"}>
 							<Stack alignItems={'center'}>
-								<BarChart setMth={(e) => setMth(e)} />
+								<BarChart data={spendingPerUserPerMonth} setMth={(e) => setMth(e)} />
 							</Stack>
 							<Text fontWeight={"medium"} px={4}>
 								{mth === 4
