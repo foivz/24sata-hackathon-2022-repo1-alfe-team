@@ -48,7 +48,7 @@ const Home: NextPage = () => {
 	return (
 		<>
 			{isLargerThan800 ? <NavBar /> : null}
-			<script dangerouslySetInnerHTML={{
+			{/* <script dangerouslySetInnerHTML={{
 				__html: `
 				window.watsonAssistantChatOptions = {
 					integrationID: "57bd42cd-3533-4a3f-8950-c67aa3c7f33f", // The ID of this integration.
@@ -62,7 +62,7 @@ const Home: NextPage = () => {
 					document.head.appendChild(t);
 				  });
 				`
-			}}></script>
+			}}></script> */}
 			<Swiper
 				spaceBetween={50}
 				slidesPerView={1}
