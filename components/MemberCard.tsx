@@ -90,7 +90,7 @@ const MemberCard = ({
 							lineHeight={1.2}
 							color={useColorModeValue("brand.800", "brand.400")}
 						>
-							{userMonthlySpending}
+							{userMonthlySpending.toFixed(2)}
 						</Text>
 						<Text fontSize={12} color={"gray.400"}>
 							{"HRK"}

@@ -54,7 +54,7 @@ export function Transaction({
       </HStack>
       <Stack textAlign="right" spacing={-1} w={"140px"}>
         <Text fontWeight="medium" fontSize="lg">
-          {totalPrice}{" "}
+          {totalPrice.toFixed(2)}{" "}
           <chakra.span fontWeight="normal" fontSize="xs" color={"gray.400"}>
             HRK
           </chakra.span>
