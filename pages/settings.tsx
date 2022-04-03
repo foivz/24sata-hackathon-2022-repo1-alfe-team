@@ -1,8 +1,9 @@
-import { Box, Heading, HStack, Text } from "@chakra-ui/layout";
-import { Switch, useMediaQuery } from "@chakra-ui/react";
+import { Box, Heading, HStack, Stack, Text } from "@chakra-ui/layout";
+import { Button, Switch, useMediaQuery } from "@chakra-ui/react";
 import MobileNav from "../components/MobileNav";
 import NavBar from "../components/Navbar";
 import { useColorMode } from "@chakra-ui/react";
+import { signOut } from "next-auth/react";
 
 
 const Settings = () => {
@@ -12,9 +13,9 @@ const Settings = () => {
     return (
         <>
             {isLargerThan800 ? <NavBar /> : null}
-            <Box p={4}>
-                <Heading pb={2}>Settings</Heading>
-                <HStack justifyContent={'space-between'}>
+            <Stack p={4} alignItems={'center'} >
+                <Heading pb={2} w={'full'}>Settings</Heading>
+                <HStack w={'full'} justifyContent={'space-between'}>
                     <Text fontSize={'md'} fontWeight={'medium'}>Dark Mode</Text>
                     <Switch 
                         size={'md'}
@@ -22,8 +23,8 @@ const Settings = () => {
                         onChange={toggleColorMode}
                     />
                 </HStack>
-                
-            </Box>
+                <Button mt={4} backgroundColor={'red.500'} color={'white'} onClick={() => signOut()} w={'190px'}>Log out</Button>
+            </Stack>
             {isLargerThan800 ? null : <MobileNav location="settings" />}
         </>
     )
