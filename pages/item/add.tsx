@@ -22,16 +22,16 @@ import { AddNavbar } from "../teams/add";
 import { useAddItemStore } from "../transaction/add";
 import { queryClient } from "../_app";
 
-interface AddItemProps {
+export interface AddItemProps {
 	embeded?: boolean;
 }
 
-interface AddItemFormData {
+export interface AddItemFormData {
 	name: string;
 	price: number;
 }
 
-const AddItem = ({ embeded = false }: AddItemProps) => {
+export const AddItem = ({ embeded = false }: AddItemProps) => {
 	const {
 		register,
 		handleSubmit,
@@ -48,12 +48,17 @@ const AddItem = ({ embeded = false }: AddItemProps) => {
 
 	const { setIsOpen, isOpen } = useAddItemStore();
 
+	const [isFetching, setIsFetching] = React.useState(false);
+
 	const onSubmit = async (e: any) => {
+		setIsFetching(true);
 		const a = await axios.get("/api/spending/smart", {
 			params: {
 				url: e.url,
 			},
 		});
+
+		setIsFetching(false);
 
 		if (a.data.status === "SUCCESS") {
 			setValue("name", a.data.name);
@@ -76,6 +81,7 @@ const AddItem = ({ embeded = false }: AddItemProps) => {
 								<Input {...url.register("url")} placeholder="www.example.com" />
 							</InputGroup>
 							<IconButton
+								isLoading={isFetching}
 								onClick={() => {
 									url.handleSubmit(onSubmit)();
 								}}

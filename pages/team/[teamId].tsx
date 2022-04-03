@@ -4,9 +4,18 @@ import {
 	Button,
 	chakra,
 	Container,
+	FormControl,
+	FormLabel,
 	Heading,
 	HStack,
 	IconButton,
+	Input,
+	Modal,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalHeader,
+	ModalOverlay,
 	Stack,
 	Tab,
 	TabList,
@@ -17,15 +26,35 @@ import {
 	VStack,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
+import { Items } from "@prisma/client";
+import axios from "axios";
+import { GroupBase, Select } from "chakra-react-select";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { FiChevronLeft, FiPlus, FiSettings } from "react-icons/fi";
-import { useQuery } from "react-query";
+import { useEffect, useState } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import {
+	FiCheck,
+	FiChevronLeft,
+	FiPlus,
+	FiSettings,
+	FiTrash,
+	FiX,
+} from "react-icons/fi";
+import { useMutation, useQuery } from "react-query";
+import { toast } from "react-toastify";
 import { TransactionsDisplay } from "..";
 import { BarChart } from "../../components/BarChart";
 import MemberCard from "../../components/MemberCard";
 import { Transaction } from "../../components/Transaction";
+import AddItem from "../item/add";
+import {
+	Opp,
+	Option,
+	SelectMenuButton,
+	useAddItemStore,
+	Value,
+} from "../transaction/add";
 
 const months = [
 	"Jan",
@@ -106,7 +135,7 @@ const Index = (props: any) => {
 				color="gray.600"
 				backgroundColor={useColorModeValue("white", "gray.900")}
 			>
-				<Text color={useColorModeValue("gray.800", "gray.400")}>spending</Text>
+				{/* <Text color={useColorModeValue("gray.800", "gray.400")}>spending</Text> */}
 				<Heading color={useColorModeValue("brand.800", "brand.400")}>
 					{thisTeamSpending}
 				</Heading>
@@ -129,6 +158,7 @@ const Index = (props: any) => {
 					<Tab>Transactions</Tab>
 					<Tab>Members</Tab>
 					<Tab>Stats</Tab>
+					<Tab>Shopping List</Tab>
 				</TabList>
 
 				<TabPanels>
@@ -140,7 +170,7 @@ const Index = (props: any) => {
 							w="full"
 							mt={8}
 							onClick={() => {
-								router.push(`/transactions/transaction?teamId=${thisTeam?.id}`);
+								router.push(`/transaction/add?teamId=${thisTeam?.id}`);
 							}}
 							leftIcon={<FiPlus />}
 						>
@@ -224,9 +254,268 @@ const Index = (props: any) => {
 							})}
 						</Stack>
 					</TabPanel>
-					<TabPanel></TabPanel>
+					<TabPanel>
+						<ShoppingList />
+					</TabPanel>
 				</TabPanels>
 			</Tabs>
+		</Container>
+	);
+};
+
+interface AddSpendingProps {}
+
+export interface ItemForm2 {
+	itemId: string;
+	price: number;
+	isChecked: boolean;
+	amount: number;
+}
+export interface TransFrom2 {
+	items: ItemForm2[];
+}
+
+const ShoppingList = ({}: AddSpendingProps) => {
+	const {
+		register,
+		handleSubmit,
+		watch,
+		control,
+		setError,
+		setValue,
+
+		formState: { errors },
+	} = useForm<TransFrom2>({});
+
+	const { setIsOpen, isOpen } = useAddItemStore();
+
+	const addSpending = useMutation<
+		{
+			items: ItemForm2;
+			teamId: string;
+		},
+		any,
+		any
+	>((data) => {
+		return axios.post("/api/spending/many", data);
+	});
+
+	const items = useQuery<any, any, Items[]>("items", async () => {
+		const a = await axios.get("/api/item");
+
+		return a.data;
+	});
+
+	const { fields, append, prepend, remove, swap, move, insert, update } =
+		useFieldArray({
+			control, // control props comes from useForm (optional: if you are using FormContext)
+			name: "items", // unique name for your Field Array
+		});
+
+	const a = watch("items");
+
+	useEffect(() => {
+		try {
+			if (localStorage.getItem("data") != null) {
+				setValue("items", JSON.parse(localStorage.getItem("data") ?? "[]"));
+			}
+		} catch (error) {}
+	}, []);
+
+	useEffect(() => {
+		console.log(a);
+
+		localStorage.setItem("data", JSON.stringify(a));
+	}, [JSON.stringify(a), items.isLoading]);
+
+	const router = useRouter();
+
+	return (
+		<Container maxW="container.sm">
+			<Box>
+				<Modal isOpen={isOpen} onClose={setIsOpen}>
+					<ModalOverlay />
+					<ModalContent>
+						<ModalHeader>Modal Title</ModalHeader>
+						<ModalCloseButton />
+						<ModalBody>
+							<Box h="2" w="full"></Box>
+
+							<AddItem embeded={true} />
+							<Box h="6" w="full"></Box>
+						</ModalBody>
+					</ModalContent>
+				</Modal>
+				<VStack spacing={4} w="full">
+					{fields.map((field, index) => (
+						<VStack alignItems={"start"} w="full" key={index}>
+							<HStack w="full" justify={"space-between"}>
+								<Text fontSize={"lg"} fontWeight="medium">
+									Proizvod {index + 1}
+								</Text>
+								<Box>
+									<IconButton
+										aria-label="re"
+										variant={"ghost"}
+										onClick={() => {
+											setValue(`items.${index}.isChecked`, !a[index].isChecked);
+										}}
+										icon={!a[index].isChecked ? <FiCheck /> : <FiX />}
+									/>
+									<IconButton
+										aria-label="re"
+										variant={"ghost"}
+										onClick={() => {
+											remove(index);
+										}}
+										icon={<FiTrash />}
+									/>
+								</Box>
+							</HStack>
+							<VStack w="full">
+								<FormControl isInvalid={!!errors?.items?.[index]?.itemId}>
+									<FormLabel htmlFor="name">Ime Proizvoda</FormLabel>
+
+									<Controller
+										control={control}
+										name={`items.${index}.itemId`}
+										rules={{
+											required: "Unesite ime proizvoda",
+										}}
+										render={({ field: { onChange, value, ref } }) => {
+											if (value === "") {
+												setError(`items.${index}.itemId`, {
+													message: "Unesite ime proizvoda",
+												});
+											}
+
+											return (
+												<Select<Opp, false, GroupBase<Opp>>
+													components={{
+														Option: Option,
+														SingleValue: Value,
+														MenuList: SelectMenuButton,
+													}}
+													ref={ref}
+													value={items.data
+														?.filter((t) => t.id === value)
+														.map((item: any) => {
+															return {
+																label: item.name,
+																value: item.id,
+																price: item.price,
+															};
+														})}
+													chakraStyles={{
+														container: (props) => ({
+															w: "full",
+															...props,
+														}),
+														menuList: (props) => ({
+															w: "full",
+															...props,
+														}),
+														valueContainer: (props) => ({
+															w: "full",
+															...props,
+														}),
+														singleValue: (props) => ({
+															w: "full",
+															...props,
+														}),
+													}}
+													onChange={(e) => {
+														setValue(
+															`items.${index}.price`,
+															parseFloat(e?.price ?? "0")
+														);
+
+														onChange(e?.value);
+													}}
+													options={items.data?.map((item: any) => {
+														return {
+															label: item.name,
+															value: item.id,
+															price: item.price,
+														};
+													})}
+													placeholder="Select some items..."
+													closeMenuOnSelect={true}
+													size="md"
+												/>
+											);
+										}}
+									/>
+								</FormControl>
+
+								{a[index]?.isChecked && (
+									<HStack w="full">
+										<FormControl isInvalid={!!errors?.items?.[index]?.price}>
+											<FormLabel htmlFor="name">Cijena</FormLabel>
+											<Input
+												{...register(`items.${index}.price`, {
+													valueAsNumber: true,
+													required: "Unesite količinu",
+												})}
+											/>
+										</FormControl>
+										<FormControl isInvalid={!!errors?.items?.[index]?.amount}>
+											<FormLabel htmlFor="name">Kom.</FormLabel>
+											<Input
+												{...register(`items.${index}.amount`, {
+													valueAsNumber: true,
+													required: "Unesite količinu",
+												})}
+											/>
+										</FormControl>
+									</HStack>
+								)}
+							</VStack>
+						</VStack>
+					))}
+
+					<HStack w={"full"}>
+						<Button
+							w={"52"}
+							onClick={() => {
+								console.log();
+
+								append({
+									amount: 1,
+									price: 0,
+									itemId: undefined,
+								});
+							}}
+						>
+							Dodaj stavku
+						</Button>
+
+						<Button
+							// isLoading={mutation.isLoading}
+							// disabled={mutation.isLoading || !!errors.name}
+							onClick={handleSubmit(async (e) => {
+								console.log(e);
+
+								try {
+									await addSpending.mutateAsync({
+										teamsId: router.query.teamId,
+										items: e.items.filter((i) => i.isChecked),
+									});
+
+									toast("Uspješno dodano");
+
+									router.push(`/team/${router.query.teamId}`);
+								} catch (error) {}
+							})}
+							w="full"
+							textColor={"black"}
+							colorScheme={"brand"}
+						>
+							Dodaj
+						</Button>
+					</HStack>
+				</VStack>
+			</Box>
 		</Container>
 	);
 };

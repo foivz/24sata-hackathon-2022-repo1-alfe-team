@@ -41,19 +41,19 @@ export const useAddItemStore = create<any>((set: any) => ({
 	setIsOpen: (open: any) => set((state: any) => ({ ...state, isOpen: open })),
 }));
 
-interface AddSpendingProps {}
+export interface AddSpendingProps {}
 
-interface Opp extends OptionBase {
+export interface Opp extends OptionBase {
 	label: string;
 	value: string;
 	price?: string;
 }
 
-interface TransFrom {
+export interface TransFrom {
 	items: ItemForm[];
 }
 
-const SelectMenuButton = (props: any) => {
+export const SelectMenuButton = (props: any) => {
 	const { setIsOpen, isOpen } = useAddItemStore();
 
 	return (
@@ -73,7 +73,7 @@ const SelectMenuButton = (props: any) => {
 	);
 };
 
-const Option = (props: OptionProps<Opp, false, GroupBase<Opp>>) => {
+export const Option = (props: OptionProps<Opp, false, GroupBase<Opp>>) => {
 	return (
 		chakraComponents.Option && (
 			<chakraComponents.Option {...props}>
@@ -91,7 +91,7 @@ const Option = (props: OptionProps<Opp, false, GroupBase<Opp>>) => {
 	);
 };
 
-const Value = (props: SingleValueProps<Opp, false, GroupBase<Opp>>) => {
+export const Value = (props: SingleValueProps<Opp, false, GroupBase<Opp>>) => {
 	return (
 		chakraComponents.SingleValue && (
 			<chakraComponents.SingleValue {...props}>
@@ -188,6 +188,7 @@ const AddSpending = ({}: AddSpendingProps) => {
 								</Text>
 								<IconButton
 									aria-label="re"
+									variant={"ghost"}
 									onClick={() => {
 										remove(index);
 									}}
@@ -239,7 +240,7 @@ const AddSpending = ({}: AddSpendingProps) => {
 													onChange={(e) => {
 														setValue(
 															`items.${index}.price`,
-															parseInt(e?.price ?? "0")
+															parseFloat(e?.price ?? "0")
 														);
 														onChange(e?.value);
 													}}

@@ -145,31 +145,33 @@ export function TransactionsDisplay({ id }: { id: any }) {
 			enabled: !!id,
 		}
 	);
+
+	const l = isLoadingSpending || id === undefined;
+
 	return (
 		<Stack spacing="5" mt="5" paddingX={2}>
-			{isLoadingSpending ||
-				(id === undefined &&
-					[1, 2, 3, 4].map((el) => {
-						return (
-							<Fragment key={el}>
-								<HStack justifyContent="space-between" paddingX={2}>
-									<HStack alignItems={"center"} height={"min-content"}>
-										<SkeletonCircle size="12" />
-										<Stack spacing={2}>
-											<Skeleton w="32" h="5" />
-											<Skeleton w="32" h="3" />
-										</Stack>
-									</HStack>
-									<Stack textAlign="right" spacing={1}>
-										<Skeleton w="24" h="4" />
-										<Text fontWeight="normal" fontSize="sm" color="gray.400">
-											<Skeleton w="24" h="4" />
-										</Text>
+			{l &&
+				[1, 2, 3, 4].map((el) => {
+					return (
+						<Fragment key={el}>
+							<HStack justifyContent="space-between" paddingX={2}>
+								<HStack alignItems={"center"} height={"min-content"}>
+									<SkeletonCircle size="12" />
+									<Stack spacing={2}>
+										<Skeleton w="32" h="5" />
+										<Skeleton w="32" h="3" />
 									</Stack>
 								</HStack>
-							</Fragment>
-						);
-					}))}
+								<Stack textAlign="right" spacing={1}>
+									<Skeleton w="24" h="4" />
+									<Text fontWeight="normal" fontSize="sm" color="gray.400">
+										<Skeleton w="24" h="4" />
+									</Text>
+								</Stack>
+							</HStack>
+						</Fragment>
+					);
+				})}
 
 			{spendingData?.length === 0 && (
 				<Center my={"44"}>

@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 				const team1 = await prisma.items.create({
 					data: {
-						price: parseInt(price) ?? 0,
+						price: parseFloat(price) ?? 0,
 						name: name,
 						User: {
 							connect: {
