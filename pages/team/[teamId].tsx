@@ -178,7 +178,9 @@ const Index = (props: any) => {
 						{/* <Text fontWeight='medium' fontSize={'md'}>Predviđena potrošnja za idući mjesec</Text> */}
 
 						<Stack justifyContent={"end"}>
-							<BarChart setMth={(e) => setMth(e)} />
+							<Stack alignItems={'center'}>
+								<BarChart setMth={(e) => setMth(e)} />
+							</Stack>
 							<Text fontWeight={"medium"} px={4}>
 								{mth === 4
 									? `Predicted Spending ${months[mth]}`
