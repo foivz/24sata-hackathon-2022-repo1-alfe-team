@@ -3,6 +3,7 @@ import { Button } from "@chakra-ui/react";
 import { useSession, signIn, signOut, getProviders } from "next-auth/react"
 import { useRouter } from "next/router";
 import { BsFacebook, BsGoogle, BsTwitter } from "react-icons/bs";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Login({ providers }: { providers: any }) {
     const { data: session } = useSession()
@@ -27,17 +28,17 @@ export default function Login({ providers }: { providers: any }) {
                 {Object.values(providers).map((provider) => (
                     <div key={(provider as any).name}>
                     <Button w={'190px'} onClick={() => signIn((provider as any).id)}>
-                        <BsGoogle /><span style={{padding: 4}}></span>
+                        <FcGoogle /><span style={{padding: 4}}></span>
                         {(provider as any).name}
                     </Button>
                     </div>
                 ))}
                 <Button w={'190px'}>
-                    <BsTwitter /><span style={{padding: 4}}></span>
+                    <BsTwitter color="#1DA1F2" /><span style={{padding: 4}}></span>
                     Twitter
                 </Button>
                 <Button w={'190px'}>
-                    <BsFacebook /><span style={{padding: 4}}></span>
+                    <BsFacebook color="#4267B2" /><span style={{padding: 4}}></span>
                     Facebook
                 </Button>
             </Stack>

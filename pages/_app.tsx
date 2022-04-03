@@ -1,5 +1,5 @@
 import { ChakraProvider, Container, extendTheme } from "@chakra-ui/react";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, useSession } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ToastContainer } from "react-toastify";
@@ -23,7 +23,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 			},
 		},
 	});
-
 	return (
 		<SessionProvider session={session}>
 			<QueryClientProvider client={queryClient}>
