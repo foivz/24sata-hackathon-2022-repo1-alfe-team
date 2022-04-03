@@ -137,7 +137,7 @@ const Index = (props: any) => {
 			>
 				{/* <Text color={useColorModeValue("gray.800", "gray.400")}>spending</Text> */}
 				<Heading color={useColorModeValue("brand.800", "brand.400")}>
-					{thisTeamSpending}
+					{thisTeamSpending.toFixed(2)}
 				</Heading>
 				<chakra.span
 					color={useColorModeValue("gray.800", "gray.400")}

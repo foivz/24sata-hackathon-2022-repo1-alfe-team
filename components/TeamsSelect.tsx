@@ -72,7 +72,7 @@ export function TeamsSelect({ el }: { el: ApiReturn }) {
 						<Box>
 							<Text>Spending</Text>
 							<Heading>
-								{el.spending}
+								{el.spending.toFixed(2)}
 								<chakra.span fontSize="sm" fontWeight="normal">
 									{" "}
 									HRK

@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRef, useState } from "react";
+import MobileNav from "../components/MobileNav";
 
 const Chat = () => {
   const input = useRef(null);
@@ -24,7 +25,7 @@ const Chat = () => {
   return (
     <Container maxW="container.lg" mt="10">
       <VStack spacing="5">
-        <Heading htmlFor="email">Pitaj Sveznajućeg Alfu</Heading>
+        <Heading>Pitaj Sveznajućeg Alfu</Heading>
         <FormControl>
           <Input id="email" type="email" ref={input} />
           <FormHelperText>
@@ -41,7 +42,7 @@ const Chat = () => {
             } = await axios.get("/api/openai", {
               params: {
                 type: "chat",
-                chat: input?.current?.value,
+                chat: (input as any)?.current?.value,
               },
             });
             setResponse(res);
@@ -58,6 +59,7 @@ const Chat = () => {
         </Text>
         {/* </Box> */}
       </VStack>
+      <MobileNav location="chat" />
     </Container>
   );
 };
