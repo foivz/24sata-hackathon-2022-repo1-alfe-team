@@ -51,16 +51,16 @@ const Home: NextPage = () => {
 			<script dangerouslySetInnerHTML={{
 				__html: `
 				window.watsonAssistantChatOptions = {
-				integrationID: "cd00869d-10c4-42e4-a973-2db0626bf2ce", // The ID of this integration.
-				region: "eu-gb", // The region your integration is hosted in.
-				serviceInstanceID: "063798ba-c462-43d2-befe-f57173ce0b4f", // The ID of your service instance.
-				onLoad: function(instance) { instance.render(); }
-				};
-				setTimeout(function(){
-				const t=document.createElement('script');
-				t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
-				document.head.appendChild(t);
-				});
+					integrationID: "57bd42cd-3533-4a3f-8950-c67aa3c7f33f", // The ID of this integration.
+					region: "eu-gb", // The region your integration is hosted in.
+					serviceInstanceID: "063798ba-c462-43d2-befe-f57173ce0b4f", // The ID of your service instance.
+					onLoad: function(instance) { instance.render(); }
+				  };
+				  setTimeout(function(){
+					const t=document.createElement('script');
+					t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+					document.head.appendChild(t);
+				  });
 				`
 			}}></script>
 			<Swiper

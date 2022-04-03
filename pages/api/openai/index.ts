@@ -97,10 +97,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       //   }
       const GPT3ResponseEvents = completionEvent.data;
       console.log(GPT3ResponseEvents);
-      const recommendedItemsEvents = GPT3ResponseEvents.choices[0].text
+      const recommendedItemsEvents = (GPT3ResponseEvents as any).choices[0].text
         .trim()
         .split(",")
-        .map((el) => el.trim());
+        .map((el: any) => el.trim());
 
       res.json({
         recommendedItems: recommendedItemsEvents,
