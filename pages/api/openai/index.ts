@@ -112,7 +112,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         max_tokens: 2500,
         temperature: 0.7,
       });
-      const GPT3ResponseChat = completionChat.data.choices[0].text;
+      console.log(completionChat.data);
+      const GPT3ResponseChat = (completionChat as any).data.choices[0].text;
       //   const GPT3ResponseChatFlter = GPT3ResponseEvents;
       res.json({
         res: GPT3ResponseChat,
