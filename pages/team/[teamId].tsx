@@ -44,6 +44,7 @@ const months = [
 const Index = (props: any) => {
 	const router = useRouter();
 	const { teamId } = router.query;
+	const [divider, setDivider] = useState(1);
 	// const { isLoading, error, data } = useQuery("teams", () =>
 	//   fetch("/api/teams").then((res) => res.json())
 	const [chart, setChart] = useState("Bar");
@@ -179,7 +180,7 @@ const Index = (props: any) => {
 
 						<Stack justifyContent={"end"}>
 							<Stack alignItems={'center'}>
-								<BarChart data={spendingPerUserPerMonth} setMth={(e) => setMth(e)} />
+								<BarChart setDivider={(e: number) => setDivider(e)} data={spendingPerUserPerMonth} setMth={(e) => setMth(e)} />
 							</Stack>
 							<Text fontWeight={"medium"} px={4}>
 								{mth === 4
@@ -193,7 +194,9 @@ const Index = (props: any) => {
 								userId={thisTeam?.ownerId}
 								userImage={thisTeam?.owner?.image}
 								itemName={thisTeam?.owner?.name}
-								totalPrice={
+								totalPrice={mth===4?
+									(spendingPerUserPerMonth && spendingPerUserPerMonth?.[mth-1][thisTeam?.ownerId])*divider || 0
+									:
 									(spendingPerUserPerMonth && spendingPerUserPerMonth?.[mth][thisTeam?.ownerId]) || 0
 								}
 								username={thisTeam?.owner?.role}
@@ -208,8 +211,9 @@ const Index = (props: any) => {
 										userId={el.userId}
 										userImage={el.user.image}
 										itemName={el.user.name}
-										totalPrice={
-											(spendingPerUserPerMonth &&
+										totalPrice={mth===4?
+											(spendingPerUserPerMonth && spendingPerUserPerMonth?.[mth-1][el.userId])*divider || 0
+											:(spendingPerUserPerMonth &&
 												spendingPerUserPerMonth?.[mth][el.userId]) ||
 											0
 										}
