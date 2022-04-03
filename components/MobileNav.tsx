@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/link-passhref */
 import {
 	Box,
 	Flex,
@@ -9,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { BiMessage } from "react-icons/bi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { VscHome } from "react-icons/vsc";
 
@@ -33,24 +35,26 @@ export default function MobileNav({ location }: { location?: string }) {
 					<Stack direction={"row"} justifyContent={"space-around"} width="full">
 						<Link href={"/"}>
 							<IconButton
-								backgroundColor={
-									location === "home" ? "#D1E800" : "transparent"
-								}
-								shadow={location === "home" ? "lg" : ""}
-								color={location === "home" ? "white" : ""}
+								backgroundColor={"transparent"}
+								color={location === "home" ? "#D1E800" : ""}
 								aria-label="Home"
 								icon={<VscHome size="26px" />}
 								size="lg"
 							/>
 						</Link>
-						{/* <IconButton backgroundColor={'transparent'} aria-label='Add new' icon={<BsPlusSquare size="26px" />} size="lg" /> */}
+						<Link href={"/chat"}>
+							<IconButton
+								backgroundColor={"transparent"}
+								color={location === "chat" ? "#D1E800" : ""}
+								aria-label="Add new"
+								icon={<BiMessage size="26px" />}
+								size="lg"
+							/>
+						</Link>
 						<Link href={"/settings"}>
 							<IconButton
-								backgroundColor={
-									location === "settings" ? "#D1E800" : "transparent"
-								}
-								shadow={location === "settings" ? "lg" : ""}
-								color={location === "settings" ? "white" : ""}
+								backgroundColor={"transparent"}
+								color={location === "settings" ? "#D1E800" : ""}
 								aria-label="Setting"
 								icon={<IoSettingsOutline size="26px" />}
 								size="lg"
