@@ -218,7 +218,7 @@ const Index = (props: any) => {
 								<BarChart
 									setDivider={(e: number) => setDivider(e)}
 									data={spendingPerUserPerMonth}
-									setMth={(e) => setMth(e)}
+									setMth={(e: any) => setMth(e)}
 								/>
 							</Stack>
 							<Text fontWeight={"medium"} px={4}>
