@@ -105,24 +105,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.json({
         recommendedItems: recommendedItemsEvents,
       });
+    case "chat":
+      const { chat } = req.query;
+      const completionChat = await openai.createCompletion("text-davinci-002", {
+        prompt: `${chat}. Odgovori na pitanje na hrvatskom.`,
+        max_tokens: 2500,
+        temperature: 0.7,
+      });
+      const GPT3ResponseChat = completionChat.data.choices[0].text;
+      //   const GPT3ResponseChatFlter = GPT3ResponseEvents;
+      res.json({
+        res: GPT3ResponseChat,
+      });
     default:
       break;
   }
-  //   try {
-  //     const completion = await openai.createCompletion("text-davinci-002", {
-  //       prompt:
-  //         "Create a shopping list with comma separated values using the following prompt: " +
-  //         data,
-  //       temperature: 0.7,
-  //     });
-  //     res.status(200).json({
-  //       result: (completion as any).data.choices[0].text
-  //         .replace(/\n/g, "")
-  //         .split(", "),
-  //     });
-  //   } catch (err) {
-  //     res.status(500).json({ error: err });
-  //   }
 };
 
 export default handler;
