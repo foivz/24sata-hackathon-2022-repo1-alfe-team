@@ -159,7 +159,7 @@ export const AddItem = ({ embeded = false }: AddItemProps) => {
 										name: e.name,
 										price: e.price,
 									});
-									queryClient.invalidateQueries("/api/item");
+									queryClient.invalidateQueries("items");
 									embeded && setIsOpen(false);
 									toast("Uspješno dodan proizvod");
 								} catch (error) {}

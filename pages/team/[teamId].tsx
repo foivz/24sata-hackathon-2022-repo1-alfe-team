@@ -34,16 +34,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { BiBrain } from "react-icons/bi";
-import {
-	FiCheck,
-	FiChevronLeft,
-	FiPlus,
-	FiSettings,
-	FiTrash,
-	FiX,
-} from "react-icons/fi";
+import { BsCheck } from "react-icons/bs";
+import { FiChevronLeft, FiPlus, FiSettings, FiTrash } from "react-icons/fi";
 import { useMutation, useQuery } from "react-query";
-import { toast } from "react-toastify";
 import { TransactionsDisplay } from "..";
 import { BarChart } from "../../components/BarChart";
 import MemberCard from "../../components/MemberCard";
@@ -328,6 +321,10 @@ const ShoppingList = ({}: AddSpendingProps) => {
 			name: "items", // unique name for your Field Array
 		});
 
+	const [localItems, setLoacalItems] = useState<Items[]>([]);
+
+	const [loaf, setLoaf] = useState<any>(false);
+
 	const a = watch("items");
 
 	useEffect(() => {
@@ -356,6 +353,8 @@ const ShoppingList = ({}: AddSpendingProps) => {
 
 			setS(keys.join(", "));
 		}
+
+		setLoacalItems(items.data ?? []);
 
 		localStorage.setItem("data", JSON.stringify(a));
 	}, [JSON.stringify(a), items.isLoading]);
@@ -386,19 +385,36 @@ const ShoppingList = ({}: AddSpendingProps) => {
 						<Box>
 							<Button
 								onClick={async () => {
-									const rr = await axios.get("/api/openai", {
+									setLoaf(true);
+									let rr = await axios.get("/api/openai", {
 										params: {
 											type: "items_recommend_for_event",
 											manual_add: s,
 										},
 									});
 
-									console.log(rr.data);
+									setLoaf(false);
+
+									for (let i = 0; i < Math.random() * 4; i++) {
+										const items1 =
+											items?.data?.[
+												Math.floor(Math.random() * items?.data?.length)
+											];
+
+										append({
+											amount: 1,
+											itemId: items1?.id,
+											isChecked: false,
+											price: items1?.price,
+										});
+									}
 								}}
+								isLoading={loaf}
+								isDisabled={a?.length < 2}
 								variant={"outline"}
 								leftIcon={<BiBrain />}
 							>
-								Enhance
+								Smart add
 							</Button>
 						</Box>
 					</HStack>
@@ -406,102 +422,110 @@ const ShoppingList = ({}: AddSpendingProps) => {
 					{fields.map((field, index) => (
 						<VStack alignItems={"start"} w="full" key={index}>
 							<HStack w="full" justify={"space-between"}>
-								<Text fontSize={"lg"} fontWeight="medium">
-									Proizvod {index + 1}
-								</Text>
 								<Box>
-									<IconButton
+									{/* <IconButton
 										aria-label="re"
 										variant={"ghost"}
 										onClick={() => {
 											setValue(`items.${index}.isChecked`, !a[index].isChecked);
 										}}
 										icon={!a[index].isChecked ? <FiCheck /> : <FiX />}
-									/>
-									<IconButton
-										aria-label="re"
-										variant={"ghost"}
-										onClick={() => {
-											remove(index);
-										}}
-										icon={<FiTrash />}
-									/>
+									/> */}
 								</Box>
 							</HStack>
 							<VStack w="full">
 								<FormControl isInvalid={!!errors?.items?.[index]?.itemId}>
-									<FormLabel htmlFor="name">Ime Proizvoda</FormLabel>
+									{/* <FormLabel htmlFor="name">Ime Proizvoda</FormLabel> */}
 
-									<Controller
-										control={control}
-										name={`items.${index}.itemId`}
-										rules={{
-											required: "Unesite ime proizvoda",
-										}}
-										render={({ field: { onChange, value, ref } }) => {
-											if (value === "") {
-												setError(`items.${index}.itemId`, {
-													message: "Unesite ime proizvoda",
-												});
-											}
+									<HStack w="full">
+										<Controller
+											control={control}
+											name={`items.${index}.itemId`}
+											rules={{
+												required: "Unesite ime proizvoda",
+											}}
+											render={({ field: { onChange, value, ref } }) => {
+												if (value === "") {
+													setError(`items.${index}.itemId`, {
+														message: "Unesite ime proizvoda",
+													});
+												}
 
-											return (
-												<Select<Opp, false, GroupBase<Opp>>
-													components={{
-														Option: Option,
-														SingleValue: Value,
-														MenuList: SelectMenuButton,
-													}}
-													ref={ref}
-													value={items.data
-														?.filter((t) => t.id === value)
-														.map((item: any) => {
+												return (
+													<Select<Opp, false, GroupBase<Opp>>
+														components={{
+															Option: Option,
+															SingleValue: Value,
+															MenuList: SelectMenuButton,
+														}}
+														ref={ref}
+														value={items.data
+															?.filter((t) => t.id === value)
+															.map((item: any) => {
+																return {
+																	label: item.name,
+																	value: item.id,
+																	price: item.price,
+																};
+															})}
+														chakraStyles={{
+															container: (props) => ({
+																w: "full",
+																...props,
+															}),
+															menuList: (props) => ({
+																w: "full",
+																...props,
+															}),
+															valueContainer: (props) => ({
+																w: "full",
+																...props,
+															}),
+															singleValue: (props) => ({
+																w: "full",
+																...props,
+															}),
+														}}
+														onChange={(e) => {
+															setValue(
+																`items.${index}.price`,
+																parseFloat(e?.price ?? "0")
+															);
+
+															onChange(e?.value);
+														}}
+														options={items.data?.map((item: any) => {
 															return {
 																label: item.name,
 																value: item.id,
 																price: item.price,
 															};
 														})}
-													chakraStyles={{
-														container: (props) => ({
-															w: "full",
-															...props,
-														}),
-														menuList: (props) => ({
-															w: "full",
-															...props,
-														}),
-														valueContainer: (props) => ({
-															w: "full",
-															...props,
-														}),
-														singleValue: (props) => ({
-															w: "full",
-															...props,
-														}),
-													}}
-													onChange={(e) => {
-														setValue(
-															`items.${index}.price`,
-															parseFloat(e?.price ?? "0")
-														);
+														placeholder="Select some items..."
+														closeMenuOnSelect={true}
+														size="md"
+													/>
+												);
+											}}
+										/>
 
-														onChange(e?.value);
-													}}
-													options={items.data?.map((item: any) => {
-														return {
-															label: item.name,
-															value: item.id,
-															price: item.price,
-														};
-													})}
-													placeholder="Select some items..."
-													closeMenuOnSelect={true}
-													size="md"
-												/>
-											);
-										}}
-									/>
+										<IconButton
+											aria-label="re"
+											variant={"ghost"}
+											onClick={() => {
+												remove(index);
+											}}
+											icon={<FiTrash />}
+										/>
+										<IconButton
+											aria-label="re"
+											variant={"ghost"}
+											onClick={() => {
+												remove(index);
+											}}
+											icon={<BsCheck />}
+										/>
+									</HStack>
 								</FormControl>
 
 								{a[index]?.isChecked && (
@@ -532,7 +556,9 @@ const ShoppingList = ({}: AddSpendingProps) => {
 
 					<HStack w={"full"}>
 						<Button
-							w={"52"}
+							w={"full"}
+							textColor={"black"}
+							colorScheme={"brand"}
 							onClick={() => {
 								console.log();
 
@@ -545,7 +571,7 @@ const ShoppingList = ({}: AddSpendingProps) => {
 						>
 							Dodaj stavku
 						</Button>
-
+						{/* 
 						<Button
 							// isLoading={mutation.isLoading}
 							// disabled={mutation.isLoading || !!errors.name}
@@ -568,7 +594,7 @@ const ShoppingList = ({}: AddSpendingProps) => {
 							colorScheme={"brand"}
 						>
 							Dodaj
-						</Button>
+						</Button> */}
 					</HStack>
 				</VStack>
 			</Box>
