@@ -63,12 +63,15 @@ const Index = (props: any) => {
 	const { data: spendingPerUser } = useQuery(`spendingPerUser`, () =>
 		fetch(`/api/spending/perUser?teamId=${teamId}`).then((res) => res.json())
 	);
+	
 	const thisTeam = teamsData?.filter((el: any) => el.id == teamId)[0];
 	console.log("spendingPerUser", spendingPerUser);
 	const thisTeamSpending = thisTeam?.spending ?? 0;
 	console.log(thisTeam?.TeamsAndUser);
 	const [mth, setMth] = useState(0);
-
+	const { data: spendingPerUserPerMonth } = useQuery(`spendingPerUserPerMonth`, () =>
+		fetch(`http://localhost:3000/api/spending/perUserPerMonth?teamId=${teamId}`).then((res) => res.json())
+	);
 	return (
 		<Container maxW="container.lg" paddingX={0}>
 			<HStack
@@ -189,7 +192,7 @@ const Index = (props: any) => {
 								userImage={thisTeam?.owner?.images}
 								itemName={thisTeam?.owner?.name}
 								totalPrice={
-									(spendingPerUser && spendingPerUser?.[thisTeam?.ownerId]) || 0
+									(spendingPerUserPerMonth && spendingPerUserPerMonth?.[mth][thisTeam?.ownerId]) || 0
 								}
 								username={thisTeam?.owner?.role}
 								nodate={true}
@@ -204,8 +207,8 @@ const Index = (props: any) => {
 										userImage={el.user.images}
 										itemName={el.user.name}
 										totalPrice={
-											(spendingPerUser &&
-												spendingPerUser?.[thisTeam?.userId]) ||
+											(spendingPerUserPerMonth &&
+												spendingPerUserPerMonth?.[mth][thisTeam?.userId]) ||
 											0
 										}
 										username={el.user.role}
