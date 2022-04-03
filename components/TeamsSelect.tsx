@@ -10,6 +10,7 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import { chakra, useColorModeValue } from "@chakra-ui/system";
+import { TeamsAndUser, User } from "@prisma/client";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React from "react";
@@ -20,12 +21,20 @@ export function TeamsSelect({ el }: { el: ApiReturn }) {
 	const MotionStack = motion(Stack);
 	const router = useRouter();
 
+	const [hover, setHover] = React.useState(false);
+
 	return (
 		<>
-			<Center onClick={() => router.push(`/team/${el.id}`)}>
+			<Center
+				onClick={() => {
+					if (!hover) {
+						router.push(`/team/${el.id}`);
+					}
+				}}
+			>
 				<MotionStack
-					whileHover={{ scale: 1.05 }}
-					whileTap={{ scale: 0.95 }}
+					whileHover={{ scale: 1.02 }}
+					whileTap={{ scale: 0.98 }}
 					maxW="container.sm"
 					key={el.id}
 					w={"full"} //
@@ -46,6 +55,12 @@ export function TeamsSelect({ el }: { el: ApiReturn }) {
 					<HStack justify={"space-between"}>
 						<Heading size="lg">{el.name}</Heading>
 						<IconButton
+							m={4}
+							onPointerEnter={() => setHover(true)}
+							onPointerLeave={() => setHover(false)}
+							onMouseEnter={() => setHover(true)}
+							colorScheme="brand"
+							onMouseLeave={() => setHover(false)}
 							_hover={{
 								background: "brand.400",
 							}}
@@ -60,19 +75,11 @@ export function TeamsSelect({ el }: { el: ApiReturn }) {
 						/>
 					</HStack>
 					<HStack justifyContent="space-between" alignItems="center">
-						<AvatarGroup>
-							{allTeamMembers?.map((el, i) => (
-								<Avatar
-									key={el.id}
-									size="md"
-									src={(el as any)?.user?.image || (el as any)?.image}
-								/>
-							))}
-						</AvatarGroup>
+						<GG allTeamMembers={allTeamMembers} />
 						<Box>
 							<Text>Spending</Text>
 							<Heading>
-								{el.spending}
+								{el.spending.toFixed(2)}
 								<chakra.span fontSize="sm" fontWeight="normal">
 									{" "}
 									HRK
@@ -85,3 +92,26 @@ export function TeamsSelect({ el }: { el: ApiReturn }) {
 		</>
 	);
 }
+
+interface GGProps {
+	allTeamMembers: (
+		| User
+		| (TeamsAndUser & {
+				user: User;
+		  })
+	)[];
+}
+
+export const GG = ({ allTeamMembers }: GGProps) => {
+	return (
+		<AvatarGroup>
+			{allTeamMembers?.map((elq, i) => (
+				<Avatar
+					key={elq.id}
+					size="md"
+					src={(elq as any)?.user?.image || (elq as any)?.image}
+				/>
+			))}
+		</AvatarGroup>
+	);
+};

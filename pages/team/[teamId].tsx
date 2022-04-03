@@ -33,6 +33,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { BiBrain } from "react-icons/bi";
 import {
 	FiCheck,
 	FiChevronLeft,
@@ -93,14 +94,18 @@ const Index = (props: any) => {
 	const { data: spendingPerUser } = useQuery(`spendingPerUser`, () =>
 		fetch(`/api/spending/perUser?teamId=${teamId}`).then((res) => res.json())
 	);
-	
+
 	const thisTeam = teamsData?.filter((el: any) => el.id == teamId)[0];
 	console.log("spendingPerUser", spendingPerUser);
 	const thisTeamSpending = thisTeam?.spending ?? 0;
 	console.log(thisTeam?.TeamsAndUser);
 	const [mth, setMth] = useState(0);
-	const { data: spendingPerUserPerMonth } = useQuery(`spendingPerUserPerMonth`, () =>
-		fetch(`http://localhost:3000/api/spending/perUserPerMonth?teamId=${teamId}`).then((res) => res.json())
+	const { data: spendingPerUserPerMonth } = useQuery(
+		`spendingPerUserPerMonth`,
+		() =>
+			fetch(
+				`http://localhost:3000/api/spending/perUserPerMonth?teamId=${teamId}`
+			).then((res) => res.json())
 	);
 	return (
 		<Container maxW="container.lg" paddingX={0}>
@@ -137,7 +142,7 @@ const Index = (props: any) => {
 			>
 				{/* <Text color={useColorModeValue("gray.800", "gray.400")}>spending</Text> */}
 				<Heading color={useColorModeValue("brand.800", "brand.400")}>
-					{thisTeamSpending}
+					{thisTeamSpending.toFixed(2)}
 				</Heading>
 				<chakra.span
 					color={useColorModeValue("gray.800", "gray.400")}
@@ -209,8 +214,12 @@ const Index = (props: any) => {
 						{/* <Text fontWeight='medium' fontSize={'md'}>Predviđena potrošnja za idući mjesec</Text> */}
 
 						<Stack justifyContent={"end"}>
-							<Stack alignItems={'center'}>
-								<BarChart setDivider={(e: number) => setDivider(e)} data={spendingPerUserPerMonth} setMth={(e) => setMth(e)} />
+							<Stack alignItems={"center"}>
+								<BarChart
+									setDivider={(e: number) => setDivider(e)}
+									data={spendingPerUserPerMonth}
+									setMth={(e) => setMth(e)}
+								/>
 							</Stack>
 							<Text fontWeight={"medium"} px={4}>
 								{mth === 4
@@ -224,10 +233,14 @@ const Index = (props: any) => {
 								userId={thisTeam?.ownerId}
 								userImage={thisTeam?.owner?.image}
 								itemName={thisTeam?.owner?.name}
-								totalPrice={mth===4?
-									(spendingPerUserPerMonth && spendingPerUserPerMonth?.[mth-1][thisTeam?.ownerId])*divider || 0
-									:
-									(spendingPerUserPerMonth && spendingPerUserPerMonth?.[mth][thisTeam?.ownerId]) || 0
+								totalPrice={
+									mth === 4
+										? (spendingPerUserPerMonth &&
+												spendingPerUserPerMonth?.[mth - 1][thisTeam?.ownerId]) *
+												divider || 0
+										: (spendingPerUserPerMonth &&
+												spendingPerUserPerMonth?.[mth][thisTeam?.ownerId]) ||
+										  0
 								}
 								username={thisTeam?.owner?.role}
 								nodate={true}
@@ -241,11 +254,14 @@ const Index = (props: any) => {
 										userId={el.userId}
 										userImage={el.user.image}
 										itemName={el.user.name}
-										totalPrice={mth===4?
-											(spendingPerUserPerMonth && spendingPerUserPerMonth?.[mth-1][el.userId])*divider || 0
-											:(spendingPerUserPerMonth &&
-												spendingPerUserPerMonth?.[mth][el.userId]) ||
-											0
+										totalPrice={
+											mth === 4
+												? (spendingPerUserPerMonth &&
+														spendingPerUserPerMonth?.[mth - 1][el.userId]) *
+														divider || 0
+												: (spendingPerUserPerMonth &&
+														spendingPerUserPerMonth?.[mth][el.userId]) ||
+												  0
 										}
 										username={el.user.role}
 										nodate={true}
@@ -322,8 +338,24 @@ const ShoppingList = ({}: AddSpendingProps) => {
 		} catch (error) {}
 	}, []);
 
+	const [s, setS] = useState<string>("");
+
 	useEffect(() => {
 		console.log(a);
+		let keys = [] as any;
+
+		if (a?.length > 2) {
+			a.forEach((aa) => {
+				console.log(
+					"ererer",
+					items.data?.filter((el) => el.id === aa.itemId)?.[0]?.name
+				);
+
+				keys.push(items.data?.filter((el) => el.id === aa.itemId)?.[0]?.name);
+			});
+
+			setS(keys.join(", "));
+		}
 
 		localStorage.setItem("data", JSON.stringify(a));
 	}, [JSON.stringify(a), items.isLoading]);
@@ -347,6 +379,30 @@ const ShoppingList = ({}: AddSpendingProps) => {
 					</ModalContent>
 				</Modal>
 				<VStack spacing={4} w="full">
+					<HStack w="full" justify={"space-between"}>
+						<Text fontSize={"xl"} fontWeight="medium">
+							Shoping List
+						</Text>
+						<Box>
+							<Button
+								onClick={async () => {
+									const rr = await axios.get("/api/openai", {
+										params: {
+											type: "items_recommend_for_event",
+											manual_add: s,
+										},
+									});
+
+									console.log(rr.data);
+								}}
+								variant={"outline"}
+								leftIcon={<BiBrain />}
+							>
+								Enhance
+							</Button>
+						</Box>
+					</HStack>
+
 					{fields.map((field, index) => (
 						<VStack alignItems={"start"} w="full" key={index}>
 							<HStack w="full" justify={"space-between"}>

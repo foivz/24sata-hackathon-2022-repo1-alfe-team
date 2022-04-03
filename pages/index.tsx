@@ -48,8 +48,9 @@ const Home: NextPage = () => {
 	return (
 		<>
 			{isLargerThan800 ? <NavBar /> : null}
-			<script dangerouslySetInnerHTML={{
-				__html: `
+			<script
+				dangerouslySetInnerHTML={{
+					__html: `
 				window.watsonAssistantChatOptions = {
 					integrationID: "57bd42cd-3533-4a3f-8950-c67aa3c7f33f", // The ID of this integration.
 					region: "eu-gb", // The region your integration is hosted in.
@@ -61,8 +62,9 @@ const Home: NextPage = () => {
 					t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
 					document.head.appendChild(t);
 				  });
-				`
-			}}></script>
+				`,
+				}}
+			></script>
 			<Swiper
 				spaceBetween={50}
 				slidesPerView={1}
@@ -175,13 +177,12 @@ export function TransactionsDisplay({ id }: { id: any }) {
 
 			{spendingData?.length === 0 && (
 				<Center my={"44"}>
-					<Text fontSize="sm" color="gray.400">
+					<Text fontSize="sm" flexDir={"row"} display="flex" color="gray.400">
 						No transactions yet,{" "}
-						<Link
-							href={`/transaction/add?teamId=${spendingData.te}`}
-							as={NextLink}
-						>
-							Add one
+						<Link href={`/transaction/add?teamId=${id}`} as={NextLink}>
+							<Text cursor={"pointer"} textColor={"brand.700"} ml={2}>
+								Add one
+							</Text>
 						</Link>
 					</Text>
 				</Center>

@@ -30,6 +30,7 @@ const AddTeamCard: NextPage = () => {
 			border={"3px"}
 			borderColor={useColorModeValue("gray.200", "gray.700")}
 			borderStyle={"dashed"}
+			onClick={() => router.push(`/teams/add`)}
 			padding="7"
 			minH={{
 				base: "52",
