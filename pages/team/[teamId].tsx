@@ -210,7 +210,7 @@ const Index = (props: any) => {
 										itemName={el.user.name}
 										totalPrice={
 											(spendingPerUserPerMonth &&
-												spendingPerUserPerMonth?.[mth][thisTeam?.userId]) ||
+												spendingPerUserPerMonth?.[mth][el.userId]) ||
 											0
 										}
 										username={el.user.role}
